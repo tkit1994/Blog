@@ -22,9 +22,9 @@ $ wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-5.1.0-Win
 - 新建立如下环境变量`CONDA_HOME`为anaconda的安装目录。
 - 编译`path`, 加入`%CONDA_HOME%\`和`%CONDA_HOME%\Scripts`。
 
-![环境变量](环境变量.PNG)
+![环境变量](associate-python-file-in-windows/环境变量.PNG)
 
-![PATH](PATH.PNG)
+![PATH](associate-python-file-in-windows/PATH.PNG)
 
 
 # 下载winpython
@@ -41,7 +41,7 @@ $ sed -i 's/unregister(sys.prefix)/#register(sys.prefix)/g' winpython/associate.
 $ python -m winpython.associate
 ```
 
-![修改associate.py](修改associate.py.PNG)
+![修改associate.py](associate-python-file-in-windows/修改associate.py.PNG)
 
 # 修改注册表
 
@@ -57,4 +57,4 @@ $ python -m winpython.associate
 
 `"D:\ProgramData\Miniconda3\pythonw.exe" "D:\ProgramData\Miniconda3\Scripts\spyder-script.py" "%1"`
 
-![修改注册表](修改注册表.PNG)
+![修改注册表](associate-python-file-in-windows/修改注册表.PNG)
