@@ -20,7 +20,7 @@ $ wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-5.1.0-Win
 
 - 右键`此电脑`，选择`属性`, `高级系统设置`, `环境变量`。
 - 新建立如下环境变量`CONDA_HOME`为anaconda的安装目录。
-- 编译`path`, 加入`%CONDA_HOME%\`和`%CONDA_HOME%\Scripts`。
+- `path`, 加入`%CONDA_HOME%\`和`%CONDA_HOME%\Scripts`。
 
 ![环境变量](associate-python-file-in-windows/环境变量.PNG)
 
