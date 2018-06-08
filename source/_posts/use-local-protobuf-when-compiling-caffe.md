@@ -42,7 +42,7 @@ LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
 INCLUDE_DIRS := $(PYTHON_INCLUDE) ${HOME}/.local/include /usr/local/include /usr/include/hdf5/serial/
 LIBRARY_DIRS := $(PYTHON_LIB) ${HOME}/.local/lib /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/
 ```
-设置`PATH`环境变量，因为要使用刚才编译好的`protoc`,然后进行编译,j后面的数字是要使用的线程数，一般为cpu的线程数+1,只影响
+设置`PATH`环境变量，因为要使用刚才编译好的`protoc`,然后进行编译,j后面的数字是要使用的线程数，一般为cpu的线程数+1,只影响编译的速度
 ```
 $ export PATH=${HOME}/.local/bin:$PATH
 $ which protoc
@@ -56,7 +56,7 @@ export LD_LIBRARY_PATH=${HOME}/.local/lib:$LD_LIBRARY_PATH
 
 ## 查看链接库的版本
 
-用下面的命令查看caffe链接的库的版本，可能看到是刚才编译好的版本。
+用下面的命令查看caffe链接的库的版本，可以看到是刚才编译好的版本。
 ```
 $ ldd build/tools/caffe | grep protobuf
 libprotobuf.so.15 => /home/ncepu/.local/lib/libprotobuf.so.15 (0x00007f7795fc1000)
