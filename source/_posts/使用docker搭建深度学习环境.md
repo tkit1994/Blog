@@ -301,4 +301,4 @@ $ nvidia-docker run it caffe-sal:latest bash
 ```
 
 运行结果
-![运行结果](使用docker搭建深度学习环境/运行结果.PNG)
+![运行结果](./使用docker搭建深度学习环境/运行结果.PNG)
