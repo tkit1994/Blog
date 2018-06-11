@@ -149,6 +149,8 @@ Dockerfile可以用来自动化构建Docker Image.
 
 ### 构建caffe-sal
 
+参考caffe官方的[Dockerfile](https://github.com/BVLC/caffe/tree/master/docker)编写自己的Docerfile
+
 目录结构
 ![目结构](使用docker搭建深度学习环境/目录结构.PNG)
 
