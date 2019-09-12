@@ -79,5 +79,5 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git 
-  repo: git@github.com:tkit1994/blog.git
+  repo: https://gh_token@github.com/tkit1994/blog.git
   branch: gh-pages
