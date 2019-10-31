@@ -1,3 +1,3 @@
 # Blog
 
-my blog 
+my blog built with hexo
