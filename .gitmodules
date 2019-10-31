@@ -1,0 +1,3 @@
+[submodule "themes/hueman"]
+	path = themes/hueman
+	url = git@github.com:tkit1994/hexo-theme-hueman.git
