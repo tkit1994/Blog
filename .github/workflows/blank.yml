@@ -10,6 +10,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+      with:
+        submudles: recursive
     - name: Build
       run: |
         sudo npm install -g hexo-cli
