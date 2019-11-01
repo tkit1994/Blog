@@ -19,6 +19,7 @@ jobs:
     - name: Build
       run: |
         yarn global add hexo-cli
+        export PATH="$PATH:$(yarn global bin)
         yarn install
         hexo clean
         hexo generate
