@@ -13,7 +13,10 @@ jobs:
       with:
         submodules: recursive
     - name: Install pandoc
-      run: sudo apt install -y pandoc
+      run: |
+        sudo add-apt-repository ppa:pandoc
+        sudo apt update
+        sudo apt install -y pandoc
     - name: Build
       run: |
         sudo npm install -g hexo-cli
