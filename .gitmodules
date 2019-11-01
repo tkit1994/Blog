@@ -1,6 +1,0 @@
-[submodule "themes/hueman"]
-	path = themes/hueman
-	url = https://github.com/tkit1994/hexo-theme-hueman.git
-[submodule "next"]
-	path = next
-	url = https://github.com/tkit1994/hexo-theme-next.git
