@@ -8,7 +8,7 @@ tags: python
 
 ## 下载anaconda
 
-可以从[清华大学开源镜像站](https://mirrors.tuna.tsinghua.edu.cn/#)下载, 比从官方下载很多。
+可以从[清华大学开源镜像站](https://mirrors.tuna.tsinghua.edu.cn/#)下载, 比从官方下载要快上很多。
 
 ```bash
 $ wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-5.1.0-Windows-x86_64.exe
