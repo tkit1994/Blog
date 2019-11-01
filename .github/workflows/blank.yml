@@ -19,7 +19,7 @@ jobs:
     - name: Build
       run: |
         sudo npm install -g hexo-cli
-        yarn install
+        npm install
         hexo clean
         hexo generate
     - name: Deploy
