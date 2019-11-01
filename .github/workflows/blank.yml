@@ -14,9 +14,8 @@ jobs:
         submodules: recursive
     - name: Install pandoc
       run: |
-        sudo add-apt-repository ppa:pandoc
-        sudo apt update
-        sudo apt install -y pandoc
+        wget https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-1-amd64.deb
+        sudo dpkg -i pandoc-2.7.3-1-amd64.deb
     - name: Build
       run: |
         sudo npm install -g hexo-cli
