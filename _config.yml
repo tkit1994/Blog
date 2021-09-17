@@ -13,8 +13,8 @@ timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://tkit.cf
-root: /
+url: http://tkit1994.github.io/Blog/
+root: /Blog/
 permalink: :year/:month/:day/:title.html
 permalink_defaults:
 
