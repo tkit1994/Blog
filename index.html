@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/Blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Blog/css/main.css">
+
+
+<link rel="stylesheet" href="/Blog/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tkit1994.github.io","root":"/Blog/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="My Blog built with hexo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tkit&#39;s Blog">
+<meta property="og:url" content="http://tkit1994.github.io/Blog/index.html">
+<meta property="og:site_name" content="Tkit&#39;s Blog">
+<meta property="og:description" content="My Blog built with hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="tkit">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://tkit1994.github.io/Blog/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Tkit's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151351366-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-151351366-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/Blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Tkit's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Blog/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/Blog/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/Blog/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Blog/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/tkit1994" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tkit1994.github.io/Blog/2019/09/12/using-latex-in-matplotlib.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Blog/images/avatar.gif">
+      <meta itemprop="name" content="tkit">
+      <meta itemprop="description" content="My Blog built with hexo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tkit's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/Blog/2019/09/12/using-latex-in-matplotlib.html" class="post-title-link" itemprop="url">using latex in matplotlib</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-12 11:35:20" itemprop="dateCreated datePublished" datetime="2019-09-12T11:35:20+08:00">2019-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-21 05:52:31" itemprop="dateModified" datetime="2021-09-21T05:52:31+08:00">2021-09-21</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Blog/2019/09/12/using-latex-in-matplotlib.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/12/using-latex-in-matplotlib.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="在matplotlib中使用latex渲染">在matplotlib中使用latex渲染</h1>
+<h2 id="代码">代码</h2>
+<p>在代码中加入如下的代码就可以在matplotlib中使用latex渲染文字 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">&quot;pgf&quot;</span>)</span><br><span class="line">pgf_with_custom_preamble = &#123;</span><br><span class="line">    <span class="comment"># &quot;font.size&quot;: 40,</span></span><br><span class="line">    <span class="string">&quot;pgf.rcfonts&quot;</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">&quot;text.usetex&quot;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&quot;pgf.preamble&quot;</span>: [</span><br><span class="line">        <span class="comment"># math setup:</span></span><br><span class="line">        <span class="string">r&quot;\usepackage&#123;unicode-math&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\usepackage[utf8]&#123;inputenc&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\usepackage&#123;xeCJK&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setmainfont&#123;Times New Roman&#125; % Set main font for ASCII&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setsansfont&#123;Times New Roman&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setmonofont&#123;Times New Roman&#125;&quot;</span></span><br><span class="line">        <span class="string">r&quot;\setCJKmainfont&#123;SimSun&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setCJKsansfont&#123;SimSun&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setCJKmonofont&#123;SimSun&#125;&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;pdf.fonttype&quot;</span>: <span class="number">42</span>,</span><br><span class="line">&#125;</span><br><span class="line">matplotlib.rcParams.update(pgf_with_custom_preamble)</span><br></pre></td></tr></table></figure></p>
+<p>完整的代码如下： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.use(<span class="string">&quot;pgf&quot;</span>)</span><br><span class="line">pgf_with_custom_preamble = &#123;</span><br><span class="line">    <span class="comment"># &quot;font.size&quot;: 40,</span></span><br><span class="line">    <span class="string">&quot;pgf.rcfonts&quot;</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">&quot;text.usetex&quot;</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">&quot;pgf.preamble&quot;</span>: [</span><br><span class="line">        <span class="comment"># math setup:</span></span><br><span class="line">        <span class="string">r&quot;\usepackage&#123;unicode-math&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\usepackage[utf8]&#123;inputenc&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\usepackage&#123;xeCJK&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setmainfont&#123;Times New Roman&#125; % Set main font for ASCII&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setsansfont&#123;Times New Roman&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setmonofont&#123;Times New Roman&#125;&quot;</span></span><br><span class="line">        <span class="string">r&quot;\setCJKmainfont&#123;SimSun&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setCJKsansfont&#123;SimSun&#125;&quot;</span>,</span><br><span class="line">        <span class="string">r&quot;\setCJKmonofont&#123;SimSun&#125;&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;pdf.fonttype&quot;</span>: <span class="number">42</span>,</span><br><span class="line">&#125;</span><br><span class="line">matplotlib.rcParams.update(pgf_with_custom_preamble)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"></span><br><span class="line">sns.<span class="built_in">set</span>()</span><br><span class="line">df = pd.read_hdf(<span class="string">&#x27;./label.h5&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性别分布</span></span><br><span class="line">gender = df[<span class="string">&#x27;gender&#x27;</span>]</span><br><span class="line"></span><br><span class="line">gender = gender.fillna(<span class="string">&#x27;unkonwn&#x27;</span>)</span><br><span class="line">counts = pd.value_counts(gender)</span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">8</span>))</span><br><span class="line">counts.plot.pie(legend=<span class="literal">True</span>, autopct=<span class="keyword">lambda</span> p: <span class="string">&#x27;&#123;:.2f&#125;%(&#123;:.0f&#125;)&#x27;</span>.<span class="built_in">format</span>(</span><br><span class="line">    p, (p/<span class="number">100</span>)*counts.<span class="built_in">sum</span>()), title=<span class="string">&quot;Gender distribution&quot;</span>)</span><br><span class="line">plt.savefig(<span class="string">&#x27;./figures/gender.png&#x27;</span>)</span><br><span class="line">plt.savefig(<span class="string">&#x27;./figures/gender&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 年龄分布</span></span><br><span class="line"></span><br><span class="line">age = df[<span class="string">&#x27;age&#x27;</span>]</span><br><span class="line">plt.clf()</span><br><span class="line">age = age.dropna()</span><br><span class="line">sns.distplot(age)</span><br><span class="line">plt.title(<span class="string">&#x27;kde plot&#x27;</span>)</span><br><span class="line">plt.savefig(<span class="string">&#x27;./figures/age.png&#x27;</span>)</span><br><span class="line">plt.savefig(<span class="string">&#x27;./figures/age&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 诊断分布</span></span><br><span class="line"></span><br><span class="line">tmp = df.iloc[:, <span class="number">2</span>:]</span><br><span class="line">plt.clf()</span><br><span class="line">counts = tmp.<span class="built_in">sum</span>() / tmp.shape[<span class="number">0</span>]</span><br><span class="line">counts.plot(kind=<span class="string">&#x27;bar&#x27;</span>, title=<span class="string">&#x27;Percentage&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.savefig(<span class="string">&#x27;./figures/diagnose.png&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">&#x27;./figures/diagnose&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>结果如图：</p>
+<figure>
+<img src="/Blog/Blog/2019/09/12/using-latex-in-matplotlib/gender.svg" alt><figcaption>gender</figcaption>
+</figure>
+<figure>
+<img src="/Blog/Blog/2019/09/12/using-latex-in-matplotlib/age.svg" alt><figcaption>age</figcaption>
+</figure>
+<figure>
+<img src="/Blog/Blog/2019/09/12/using-latex-in-matplotlib/diagnose.svg" alt><figcaption>dianose</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tkit1994.github.io/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Blog/images/avatar.gif">
+      <meta itemprop="name" content="tkit">
+      <meta itemprop="description" content="My Blog built with hexo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tkit's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83.html" class="post-title-link" itemprop="url">使用docker搭建深度学习环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-10 10:18:22" itemprop="dateCreated datePublished" datetime="2018-06-10T10:18:22+08:00">2018-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-21 05:52:32" itemprop="dateModified" datetime="2021-09-21T05:52:32+08:00">2021-09-21</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/10/使用docker搭建深度学习环境.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="docker">Docker</h1>
+<p>Docker是一种虚拟化容器，可能把运行环境与操作系统隔离起来，使开发环境与操作系统分离，方便多个开发环境的管理。与虚拟机相比，它更加轻量，方便。</p>
+<h1 id="系统环境">系统环境</h1>
+<ul>
+<li>Ubuntu 16.04 LTS</li>
+<li>Nvidia GTX Titan Xp(其它Nvidia的显卡应该也可以)</li>
+</ul>
+<h1 id="安装nvidia驱动已经安装过的可以跳过">安装Nvidia驱动（已经安装过的可以跳过）</h1>
+<p>可以参照这篇<a target="_blank" rel="noopener" href="https://websiteforstudents.com/install-proprietary-nvidia-gpu-drivers-on-ubuntu-16-04-17-10-18-04/">文章</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo add-apt-repository ppa:graphics-drivers/ppa</span><br><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install nvidia-387</span><br></pre></td></tr></table></figure>
+<h1 id="安装docker-ce和nvidia-docker">安装Docker-ce和Nvidia-Docker</h1>
+<h2 id="安装docker-ce">安装Docker-ce</h2>
+<p>docker-ce的安装可以参照这里的<a target="_blank" rel="noopener" href="https://docs.docker.com/install/linux/docker-ce/ubuntu/#uninstall-old-versions">官方文档</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 卸载Ubuntu官方源中的docker.io（如果之前安装了的话）</span></span><br><span class="line">$ sudo apt-get remove docker docker-engine docker.io</span><br><span class="line"><span class="comment"># 更新apt package index.</span></span><br><span class="line">$ sudo apt-get update</span><br><span class="line"><span class="comment"># 安装一些要用到了一些包</span></span><br><span class="line">$ sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    software-properties-common</span><br><span class="line"><span class="comment"># 添加docker官方的GPG KEY</span></span><br><span class="line">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"><span class="comment"># 添加docker官方的源</span></span><br><span class="line">$ sudo add-apt-repository \</span><br><span class="line">   <span class="string">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span></span><br><span class="line"><span class="string">   <span class="subst">$(lsb_release -cs)</span> \</span></span><br><span class="line"><span class="string">   stable&quot;</span></span><br><span class="line"><span class="comment"># 更新apt package index.</span></span><br><span class="line">$ sudo apt-get update</span><br><span class="line"><span class="comment"># 安装docker-ce</span></span><br><span class="line">$ sudo apt-get install docker-ce</span><br></pre></td></tr></table></figure>
+<h2 id="安装nvidia-docker">安装Nvidia-docker</h2>
+<p>在docker-ce中并不能使用GPU,要安装nvidia-docker才可以，nvidia-docker的安装可以参照其<a target="_blank" rel="noopener" href="https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0)">官方文档</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置软件源</span></span><br><span class="line">$ curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \</span><br><span class="line">  sudo apt-key add -</span><br><span class="line">$ distribution=$(. /etc/os-release;<span class="built_in">echo</span> $ID<span class="variable">$VERSION_ID</span>)</span><br><span class="line">$ curl -s -L https://nvidia.github.io/nvidia-docker/<span class="variable">$distribution</span>/nvidia-docker.list | \</span><br><span class="line">  sudo tee /etc/apt/sources.list.d/nvidia-docker.list</span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="comment"># 安装Nvidia-docker</span></span><br><span class="line">$ sudo apt-get install nvidia-docker2</span><br></pre></td></tr></table></figure>
+<h2 id="配置docker">配置Docker</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动Docker服务</span></span><br><span class="line">sudo service docker start</span><br><span class="line"><span class="comment"># 将当前用户加入docker group</span></span><br><span class="line">sudo gpasswd -a <span class="variable">$USER</span> docker</span><br></pre></td></tr></table></figure>
+<h2 id="优化dockerhub连接可选">优化Dockerhub连接(可选)</h2>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/">Dockerhub</a>是一个托管docker镜像的地方，就像<a target="_blank" rel="noopener" href="https://github.com/">Github</a>是一个托管代码的地方一样。上面有大量别人已经配置好的docker环境可以直接使用，十分方便。但是在国内访问十分缓慢。</p>
+<p>可以参照这个<a target="_blank" rel="noopener" href="https://blog.csdn.net/evandeng2009/article/details/53893789">博客</a>使用阿里云容器hub对Dockerhub进行加速，阿里云容器hub的加速是免费的，实测在学校能达到大概1M/s，而直接连接Dockerhub的速度则惨不忍睹。</p>
+<figure>
+<img src="/Blog/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83/阿里云.PNG" alt><figcaption>阿里云容器hub</figcaption>
+</figure>
+<p>复制上面的专属加速地层地址后编辑<code>/etc/docker//etc/docker/daemon.json</code> 在后面加入如下一行(注意json的格式，要写在<code>&#123;&#125;</code>里面，上一行结尾要有<code>,</code>)：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;registry-mirrosrs&quot;:[&quot;刚才复制的地址&quot;]</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/Blog/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83/修改daemon.json.PNG" alt><figcaption>修改daemon.json</figcaption>
+</figure>
+<p>至此Docker和Nvidia环境安装配置完成</p>
+<h1 id="使用docker">使用docker</h1>
+<h2 id="简单使用">简单使用</h2>
+<p>一些常用的镜像可以直接在dockerhub上搜索，然后通过dcoker运行。比如下面的这个<a target="_blank" rel="noopener" href="https://hub.docker.com/r/tensorflow/tensorflow/">Tensorflow</a>, 通过下面的这个命令即可开箱及用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvidia-docker run -it -p 8888:8888 tensorflow/tensorflow:latest-gpu</span><br></pre></td></tr></table></figure>
+<h2 id="使用nvidia提供的cudacudnn环境镜像">使用Nvidia提供的cuda&amp;cudnn环境镜像</h2>
+<p>如果在电脑上安装多个版本的<code>cuda</code>、<code>cudnn</code>等库并且管理其版本是一件很麻烦的事情。有了docker之后可以使用Nvidia官方提供的docker镜像，在这些镜像中cuda和cudnn都是已经安装配置好了的。如果dockerhub上面没有我们想要的一些环境的话，可以在这个环境的基础上继续构建我们的环境。</p>
+<p>以<code>8.0-cudnn5-devel-ubuntu16.04</code>为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  nvidia-docker run --name <span class="built_in">test</span> -it nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04 bash</span><br></pre></td></tr></table></figure>
+<p>如下图片所示可以进入对应的环境，然后可以像正常使用Linux一样继续构建环境。</p>
+<figure>
+<img src="/Blog/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83/8.0-cudnn5-devel-ubuntu16.04.PNG" alt><figcaption>8.0-cudnn5-devel-ubuntu16.04</figcaption>
+</figure>
+<p>要退出环境的话，输入<code>exit</code>或者使用快捷键<code>ctrl=d</code>就可以了。</p>
+<p>配置好环境退出后后使用可以使用<code>docker commit</code>将<code>container</code>保存成<code>image</code>从而使环境持久化，方便生成同样的环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker commit <span class="built_in">test</span> <span class="built_in">test</span>:<span class="built_in">test</span></span><br><span class="line">sha256:e9338a3b4aede076ab566c44b1127f5c1b18fd3dcb7cb3e02e19856f21db0c5b</span><br></pre></td></tr></table></figure>
+<p>可以通过下面的命令新建一个同样的环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvidia-docker run -it --name test01 <span class="built_in">test</span>:<span class="built_in">test</span> bash</span><br></pre></td></tr></table></figure>
+<p>如果只是想运行刚才的<code>container</code>的话，可以用<code>docker container start</code>命令。</p>
+<p>更加详细的使用方法可以参照Docker的<a target="_blank" rel="noopener" href="https://docs.docker.com/">官方文档</a>和一些中文教程。</p>
+<h2 id="使用dockerfile">使用Dockerfile</h2>
+<p>Dockerfile可以用来自动化构建Docker Image.</p>
+<h3 id="构建caffe-sal">构建caffe-sal</h3>
+<p>参考caffe官方的<a target="_blank" rel="noopener" href="https://github.com/BVLC/caffe/tree/master/docker">Dockerfile</a>编写自己的Docerfile</p>
+<p>目录结构 <img src="/Blog/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83/目录结构.PNG" alt="目结构"></p>
+<p>Dockerfile的内容</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nvidia/cuda</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install -y --no-install-recommends \</span></span><br><span class="line"><span class="bash">	cpio \</span></span><br><span class="line"><span class="bash">        build-essential \</span></span><br><span class="line"><span class="bash">        git \</span></span><br><span class="line"><span class="bash">        wget \</span></span><br><span class="line"><span class="bash">        numactl \</span></span><br><span class="line"><span class="bash">        vim \</span></span><br><span class="line"><span class="bash">        libopenblas-dev\</span></span><br><span class="line"><span class="bash">        screen \</span></span><br><span class="line"><span class="bash">        libmlx4-1 libmlx5-1 ibutils  rdmacm-utils libibverbs1 ibverbs-utils perftest infiniband-diags \</span></span><br><span class="line"><span class="bash">        openmpi-bin libopenmpi-dev \</span></span><br><span class="line"><span class="bash">        libboost-all-dev \</span></span><br><span class="line"><span class="bash">        libgflags-dev \</span></span><br><span class="line"><span class="bash">        libgoogle-glog-dev \</span></span><br><span class="line"><span class="bash">        libhdf5-serial-dev \</span></span><br><span class="line"><span class="bash">        libleveldb-dev \</span></span><br><span class="line"><span class="bash">        liblmdb-dev \</span></span><br><span class="line"><span class="bash">        libopencv-dev \</span></span><br><span class="line"><span class="bash">        libprotobuf-dev \</span></span><br><span class="line"><span class="bash">        libsnappy-dev \</span></span><br><span class="line"><span class="bash">        protobuf-compiler</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> CAFFE_ROOT=/opt/caffe</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> <span class="variable">$CAFFE_ROOT</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> caffe-sal caffe-sal</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> <span class="variable">$CAFFE_ROOT</span>/caffe-sal</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> Makefile.config Makefile.config</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> make -j40</span></span><br></pre></td></tr></table></figure>
+<p>Makefile.config的内容</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Refer to http://caffe.berkeleyvision.org/installation.html</span></span><br><span class="line"><span class="comment"># Contributions simplifying and improving our build system are welcome!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cuDNN acceleration switch (uncomment to build with cuDNN).</span></span><br><span class="line"><span class="comment"># USE_CUDNN := 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># CPU-only switch (uncomment to build without GPU support).</span></span><br><span class="line"><span class="comment"># CPU_ONLY := 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># To customize your choice of compiler, uncomment and set the following.</span></span><br><span class="line"><span class="comment"># N.B. the default for Linux is g++ and the default for OSX is clang++</span></span><br><span class="line"><span class="comment"># CUSTOM_CXX := g++</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># CUDA directory contains bin/ and lib/ directories that we need.</span></span><br><span class="line">CUDA_DIR := /usr/local/cuda</span><br><span class="line"><span class="comment"># On Ubuntu 14.04, if cuda tools are installed via</span></span><br><span class="line"><span class="comment"># &quot;sudo apt-get install nvidia-cuda-toolkit&quot; then use this instead:</span></span><br><span class="line"><span class="comment"># CUDA_DIR := /usr</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># CUDA architecture setting: going with all of them.</span></span><br><span class="line"><span class="comment"># For CUDA &lt; 6.0, comment the *_50 lines for compatibility.</span></span><br><span class="line">CUDA_ARCH := -gencode arch=compute_30,code=sm_30 \</span><br><span class="line">		-gencode arch=compute_35,code=sm_35 \</span><br><span class="line">		-gencode arch=compute_50,code=sm_50 \</span><br><span class="line">		-gencode arch=compute_50,code=compute_50</span><br><span class="line"></span><br><span class="line"><span class="comment"># BLAS choice:</span></span><br><span class="line"><span class="comment"># atlas for ATLAS (default)</span></span><br><span class="line"><span class="comment"># mkl for MKL</span></span><br><span class="line"><span class="comment"># open for OpenBlas</span></span><br><span class="line">BLAS := open</span><br><span class="line"><span class="comment"># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.</span></span><br><span class="line"><span class="comment"># Leave commented to accept the defaults for your choice of BLAS</span></span><br><span class="line"><span class="comment"># (which should work)!</span></span><br><span class="line"><span class="comment"># BLAS_INCLUDE := /path/to/your/blas</span></span><br><span class="line"><span class="comment"># BLAS_LIB := /path/to/your/blas</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew puts openblas in a directory that is not on the standard search path</span></span><br><span class="line"><span class="comment"># BLAS_INCLUDE := $(shell brew --prefix openblas)/include</span></span><br><span class="line"><span class="comment"># BLAS_LIB := $(shell brew --prefix openblas)/lib</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is required only if you will compile the matlab interface.</span></span><br><span class="line"><span class="comment"># MATLAB directory should contain the mex binary in /bin.</span></span><br><span class="line"><span class="comment"># MATLAB_DIR := /usr/local</span></span><br><span class="line"><span class="comment"># MATLAB_DIR := /Applications/MATLAB_R2012b.app</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># <span class="doctag">NOTE:</span> this is required only if you will compile the python interface.</span></span><br><span class="line"><span class="comment"># We need to be able to find Python.h and numpy/arrayobject.h.</span></span><br><span class="line">PYTHON_INCLUDE := /usr/<span class="keyword">include</span>/python2.7 \</span><br><span class="line">		/usr/lib/python2.7/dist-packages/numpy/core/<span class="keyword">include</span></span><br><span class="line"><span class="comment"># Anaconda Python distribution is quite popular. Include path:</span></span><br><span class="line"><span class="comment"># Verify anaconda location, sometimes it&#x27;s in root.</span></span><br><span class="line"><span class="comment"># ANACONDA_HOME := $(HOME)/anaconda</span></span><br><span class="line"><span class="comment"># PYTHON_INCLUDE := $(ANACONDA_HOME)/include \</span></span><br><span class="line">		<span class="comment"># $(ANACONDA_HOME)/include/python2.7 \</span></span><br><span class="line">		<span class="comment"># $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># We need to be able to find libpythonX.X.so or .dylib.</span></span><br><span class="line">PYTHON_LIB := /usr/lib</span><br><span class="line"><span class="comment"># PYTHON_LIB := $(ANACONDA_HOME)/lib</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew installs numpy in a non standard path (keg only)</span></span><br><span class="line"><span class="comment"># PYTHON_INCLUDE += $(dir $(shell python -c &#x27;import numpy.core; print(numpy.core.__file__)&#x27;))/include</span></span><br><span class="line"><span class="comment"># PYTHON_LIB += $(shell brew --prefix numpy)/lib</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment to support layers written in Python (will link against Python libs)</span></span><br><span class="line"><span class="comment"># WITH_PYTHON_LAYER := 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Whatever else you find you need goes here.</span></span><br><span class="line">INCLUDE_DIRS := <span class="variable">$(PYTHON_INCLUDE)</span> $&#123;HOME&#125;/.local/<span class="keyword">include</span> /usr/local/<span class="keyword">include</span> /usr/<span class="keyword">include</span>/hdf5/serial/</span><br><span class="line">LIBRARY_DIRS := <span class="variable">$(PYTHON_LIB)</span> $&#123;HOME&#125;/.local/lib /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/</span><br><span class="line"></span><br><span class="line"><span class="comment"># If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies</span></span><br><span class="line"><span class="comment"># INCLUDE_DIRS += $(shell brew --prefix)/include</span></span><br><span class="line"><span class="comment"># LIBRARY_DIRS += $(shell brew --prefix)/lib</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment to use `pkg-config` to specify OpenCV library paths.</span></span><br><span class="line"><span class="comment"># (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)</span></span><br><span class="line"><span class="comment"># USE_PKG_CONFIG := 1</span></span><br><span class="line"></span><br><span class="line">BUILD_DIR := build</span><br><span class="line">DISTRIBUTE_DIR := distribute</span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171</span></span><br><span class="line"><span class="comment"># DEBUG := 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The ID of the GPU that &#x27;make runtest&#x27; will use to run unit tests.</span></span><br><span class="line">TEST_GPUID := 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># enable pretty build (comment to see full commands)</span></span><br><span class="line">Q ?= @</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行构建命令</span></span><br><span class="line">$ docker build --rm -t caffe-sal:latest .</span><br></pre></td></tr></table></figure>
+<p>构建结果： <img src="/Blog/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83/构建结果.PNG" alt="构建结果"></p>
+<p>运行构建好的<code>Image</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvidia-docker run it caffe-sal:latest bash</span><br></pre></td></tr></table></figure>
+<p>运行结果 <img src="/Blog/Blog/2018/06/10/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83/运行结果.PNG" alt="运行结果"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tkit1994.github.io/Blog/2018/06/08/use-local-protobuf-when-compiling-caffe.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Blog/images/avatar.gif">
+      <meta itemprop="name" content="tkit">
+      <meta itemprop="description" content="My Blog built with hexo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tkit's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/Blog/2018/06/08/use-local-protobuf-when-compiling-caffe.html" class="post-title-link" itemprop="url">编译caffe时使用本地的protobuf</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-08 14:37:46" itemprop="dateCreated datePublished" datetime="2018-06-08T14:37:46+08:00">2018-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-21 05:52:31" itemprop="dateModified" datetime="2021-09-21T05:52:31+08:00">2021-09-21</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Blog/2018/06/08/use-local-protobuf-when-compiling-caffe.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/08/use-local-protobuf-when-compiling-caffe.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="编译caffe时使用本地的protobuf">编译caffe时使用本地的protobuf</h1>
+<h2 id="下载并编译protobuf">下载并编译protobuf</h2>
+<p>Protobuf的项目主页可以在<a target="_blank" rel="noopener" href="https://github.com/google/protobuf">github</a>上找到。在<a target="_blank" rel="noopener" href="https://github.com/google/protobuf/releases">Release页面</a>可以下载对应的代码。下载<a target="_blank" rel="noopener" href="https://github.com/google/protobuf/releases/download/v3.5.1/protobuf-cpp-3.5.1.tar.gz">protobuf-cpp-3.5.1.tar.gz</a>，别的版本应该也可以。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://github.com/google/protobuf/releases/download/v3.5.1/protobuf-cpp-3.5.1.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar -xvf protobuf-cpp-3.5.1.tar.gz</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span> protobuf-3.5.1</span><br><span class="line"></span><br><span class="line">$ ./configure --prefix=<span class="string">&quot;<span class="variable">$HOME</span>/.local&quot;</span></span><br><span class="line"></span><br><span class="line">$ make -j20</span><br><span class="line"></span><br><span class="line">$ make install</span><br></pre></td></tr></table></figure>
+<h1 id="编译caffe">编译caffe</h1>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ unrar x caffe-sal.rar</span><br><span class="line">$ <span class="built_in">cd</span> caffe-sal</span><br><span class="line">$ cp Makefile.config.example Makefile.config</span><br></pre></td></tr></table></figure>
+<p>编辑<code>Makefile.config</code></p>
+<p>修改 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE_DIRS :&#x3D; $(PYTHON_INCLUDE) &#x2F;usr&#x2F;local&#x2F;include</span><br><span class="line">LIBRARY_DIRS :&#x3D; $(PYTHON_LIB) &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib</span><br></pre></td></tr></table></figure> 为 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE_DIRS :&#x3D; $(PYTHON_INCLUDE) $&#123;HOME&#125;&#x2F;.local&#x2F;include &#x2F;usr&#x2F;local&#x2F;include &#x2F;usr&#x2F;include&#x2F;hdf5&#x2F;serial&#x2F;</span><br><span class="line">LIBRARY_DIRS :&#x3D; $(PYTHON_LIB) $&#123;HOME&#125;&#x2F;.local&#x2F;lib &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib &#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;hdf5&#x2F;serial&#x2F;</span><br></pre></td></tr></table></figure> 设置<code>PATH</code>环境变量，因为要使用刚才编译好的<code>protoc</code>,然后进行编译,j后面的数字是要使用的线程数，一般为cpu的线程数+1,只影响编译的速度 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ export PATH&#x3D;$&#123;HOME&#125;&#x2F;.local&#x2F;bin:$PATH</span><br><span class="line">$ which protoc</span><br><span class="line">&#x2F;home&#x2F;ncepu&#x2F;.local&#x2F;bin&#x2F;protoc</span><br><span class="line">$ make -j41</span><br></pre></td></tr></table></figure> 每次运行程序前设置环境变量<code>LD_LIBRARY_PATH</code>,或者把它加到.bashrc里面去。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;$&#123;HOME&#125;&#x2F;.local&#x2F;lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure></p>
+<h2 id="查看链接库的版本">查看链接库的版本</h2>
+<p>用下面的命令查看caffe链接的库的版本，可以看到是刚才编译好的版本。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ldd build&#x2F;tools&#x2F;caffe | grep protobuf</span><br><span class="line">libprotobuf.so.15 &#x3D;&gt; &#x2F;home&#x2F;ncepu&#x2F;.local&#x2F;lib&#x2F;libprotobuf.so.15 (0x00007f7795fc1000)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tkit1994.github.io/Blog/2018/05/01/associate-python-file-in-windows.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Blog/images/avatar.gif">
+      <meta itemprop="name" content="tkit">
+      <meta itemprop="description" content="My Blog built with hexo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tkit's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/Blog/2018/05/01/associate-python-file-in-windows.html" class="post-title-link" itemprop="url">Windows下载关联python</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-01 18:30:37" itemprop="dateCreated datePublished" datetime="2018-05-01T18:30:37+08:00">2018-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-21 05:52:31" itemprop="dateModified" datetime="2021-09-21T05:52:31+08:00">2021-09-21</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/Blog/2018/05/01/associate-python-file-in-windows.html#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/01/associate-python-file-in-windows.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="安装anaconda">安装anaconda</h1>
+<h2 id="下载anaconda">下载anaconda</h2>
+<p>可以从<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/#">清华大学开源镜像站</a>下载, 比从官方下载要快上很多。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-5.1.0-Windows-x86_64.exe</span><br></pre></td></tr></table></figure>
+<p>运行下载的文件完成安装。</p>
+<h1 id="设置环境变量">设置环境变量</h1>
+<ul>
+<li>右键<code>此电脑</code>，选择<code>属性</code>, <code>高级系统设置</code>, <code>环境变量</code>。</li>
+<li>新建立如下环境变量<code>CONDA_HOME</code>为anaconda的安装目录。</li>
+<li>编辑环境变量<code>path</code>, 加入<code>%CONDA_HOME%\</code>和<code>%CONDA_HOME%\Scripts</code>。</li>
+</ul>
+<figure>
+<img src="/Blog/Blog/2018/05/01/associate-python-file-in-windows/环境变量.PNG" alt><figcaption>环境变量</figcaption>
+</figure>
+<figure>
+<img src="/Blog/Blog/2018/05/01/associate-python-file-in-windows/PATH.PNG" alt><figcaption>PATH</figcaption>
+</figure>
+<h1 id="下载winpython">下载winpython</h1>
+<ul>
+<li>从github上下载<a target="_blank" rel="noopener" href="https://github.com/winpython/winpython">Winpython</a></li>
+<li>修改winpython/associate.py</li>
+<li>注释<code>unregister(sys.prefix)</code>这一行</li>
+<li>运行<code>python -m winpython.associate</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/winpython/winpython.git</span><br><span class="line">$ <span class="built_in">cd</span> winpython</span><br><span class="line">$ sed -i <span class="string">&#x27;s/unregister(sys.prefix)/#register(sys.prefix)/g&#x27;</span> winpython/associate.py</span><br><span class="line">$ python -m winpython.associate</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/Blog/Blog/2018/05/01/associate-python-file-in-windows/修改associate.py.PNG" alt><figcaption>修改associate.py</figcaption>
+</figure>
+<h1 id="修改注册表">修改注册表</h1>
+<p>打开注册表编辑器，查找<code>python.File</code>，修改</p>
+<p><code>计算机\HKEY_CURRENT_USER\Software\Classes\Python.File\shell\Edit with Spyder\command</code></p>
+<p>的值：</p>
+<p><code>"D:\ProgramData\Miniconda3\pythonw.exe" "D:\ProgramData\Miniconda3\Scripts\spyder" "%1"</code></p>
+<p>为：</p>
+<p><code>"D:\ProgramData\Miniconda3\pythonw.exe" "D:\ProgramData\Miniconda3\Scripts\spyder-script.py" "%1"</code></p>
+<figure>
+<img src="/Blog/Blog/2018/05/01/associate-python-file-in-windows/修改注册表.PNG" alt><figcaption>修改注册表</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tkit</p>
+  <div class="site-description" itemprop="description">My Blog built with hexo</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Blog/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Blog/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button motion-element"><i class="fa fa-comment"></i>
+    Chat
+  </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tkit1994" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tkit1994" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tkit</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Blog/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/Blog/lib/velocity/velocity.min.js"></script>
+  <script src="/Blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/Blog/js/utils.js"></script>
+
+<script src="/Blog/js/motion.js"></script>
+
+
+<script src="/Blog/js/schemes/muse.js"></script>
+
+
+<script src="/Blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/Blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tkit1994.github.io/Blog/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hexo-theme-hueman.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+</body>
+</html>
