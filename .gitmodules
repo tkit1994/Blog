@@ -1,0 +1,4 @@
+[submodule "themes/even"]
+	path = themes/even
+	url = https://github.com/getzola/even.git
+	branch = master
