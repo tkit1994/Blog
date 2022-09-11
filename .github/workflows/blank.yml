@@ -27,3 +27,5 @@ jobs:
 
       - name: Zola Deploy
         uses: zbrox/zola-deploy-action@0.12.2
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
