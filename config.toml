@@ -9,7 +9,7 @@ build_search_index = true
 
 theme = "even"
 
-description = ""
+description = "My person blog built with zola."
 generate_feed = true
 
 taxonomies = [
