@@ -28,5 +28,4 @@ jobs:
       - name: Zola Deploy
         uses: shalzz/zola-deploy-action@v0.16.1
         env:
-          TOKEN: $GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}
-          # TOKEN: ${{ secrets.TOKEN  }}
+          TOKEN: ${{ secrets.TOKEN  }}
