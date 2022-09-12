@@ -1,7 +1,10 @@
 ---
 title: 编译caffe时使用本地的protobuf
 date: 2018-06-08 14:37:46
-tags:
+taxonomies:
+  tags:
+    - caffe
+    - compile
 ---
 
 ## 下载并编译protobuf

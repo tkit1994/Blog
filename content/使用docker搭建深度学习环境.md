@@ -1,7 +1,8 @@
 ---
 title: 使用docker搭建深度学习环境
 date: 2018-06-10 10:18:22
-tags:
+taxonomies:
+  tags:
     - docker
     - 深度学习
     - 环境搭建

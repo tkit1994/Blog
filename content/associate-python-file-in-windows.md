@@ -1,7 +1,9 @@
 ---
 title: Windows下载关联python
 date: 2018-05-01 18:30:37
-tags: python 
+taxonomies:
+  tags: 
+    - python
 ---
 
 ## 安装anaconda

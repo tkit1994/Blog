@@ -1,10 +1,11 @@
 ---
 title: 在matplotlib中使用latex渲染
 date: 2019-09-12 11:35:20
-tags: 
-    - matplotlib
-    - latex
-    - python
+taxonomies:
+    tags: 
+        - matplotlib
+        - latex
+        - python
 ---
 
 ## 代码
