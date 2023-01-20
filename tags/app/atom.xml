@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title> - app</title>
+	<subtitle>My person blog built with zola.</subtitle>
+	<link href="/tags/app/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="/"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2022-09-15T07:00:41+00:00</updated>
+	<id>/tags/app/atom.xml</id>
+	<entry xml:lang="en">
+		<title>Awsome apps</title>
+		<published>2022-09-15T07:00:41+00:00</published>
+		<updated>2022-09-15T07:00:41+00:00</updated>
+		<link rel="alternate" href="/awsome-apps/" type="text/html"/>
+		<id>/awsome-apps/</id>
+		<content type="html">&lt;h2 id=&quot;windows-linux&quot;&gt;windows &amp;amp; linux&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;termial-emulators&quot;&gt;Termial emulators&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;alacritty&#x2F;alacritty&quot;&gt;alacritty&lt;&#x2F;a&gt; A cross-platform, GPU-accelerated terminal emulator&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;gui-applications&quot;&gt;GUI Applications&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.foxitsoftware.com&#x2F;products&#x2F;pdf-reader&#x2F;&quot;&gt;foxit-pdf-reader&lt;&#x2F;a&gt; A fast, secure and complete PDF viewer&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;freecadweb.org&#x2F;&quot;&gt;freecad&lt;&#x2F;a&gt; Feature based parametric 3D CAD modeler&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;goldendict&#x2F;goldendict&quot;&gt;goldendict&lt;&#x2F;a&gt; Feature-rich dictionary lookup program supporting multiple dictionary formats&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.google.com&#x2F;chrome&quot;&gt;googlechrome&lt;&#x2F;a&gt; The popular and trusted web browser by Google
+&lt;ul&gt;
+&lt;li&gt;[Addons]
+&lt;ul&gt;
+&lt;li&gt;[Bitwarden]&lt;&#x2F;li&gt;
+&lt;li&gt;[Chrono下载管理器]&lt;&#x2F;li&gt;
+&lt;li&gt;[ChroPath]&lt;&#x2F;li&gt;
+&lt;li&gt;[EditThisCookie]&lt;&#x2F;li&gt;
+&lt;li&gt;[Enhanced GitHub]&lt;&#x2F;li&gt;
+&lt;li&gt;[MONKNOW]&lt;&#x2F;li&gt;
+&lt;li&gt;[Octotree]&lt;&#x2F;li&gt;
+&lt;li&gt;[Proxy SwitchyOmega]&lt;&#x2F;li&gt;
+&lt;li&gt;[SponsorBlock for YouTube]&lt;&#x2F;li&gt;
+&lt;li&gt;[Tampermonkey BETA]
+&lt;ul&gt;
+&lt;li&gt;[DouyuEx-斗鱼直播间增强插件]&lt;&#x2F;li&gt;
+&lt;li&gt;[网盘智能识别助手]&lt;&#x2F;li&gt;
+&lt;li&gt;[网盘直链下载助手]&lt;&#x2F;li&gt;
+&lt;li&gt;[屏蔽html5播放器p2p上传]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;[uBlock Origin]&lt;&#x2F;li&gt;
+&lt;li&gt;[FireShot]&lt;&#x2F;li&gt;
+&lt;li&gt;[沙拉查词]&lt;&#x2F;li&gt;
+&lt;li&gt;[身份验证器]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;[kicad]&lt;&#x2F;li&gt;
+&lt;li&gt;[lx-music-desktop]&lt;&#x2F;li&gt;
+&lt;li&gt;[mpv]&lt;&#x2F;li&gt;
+&lt;li&gt;[picgo]&lt;&#x2F;li&gt;
+&lt;li&gt;[postman]&lt;&#x2F;li&gt;
+&lt;li&gt;[qbittorrent-enhanced]&lt;&#x2F;li&gt;
+&lt;li&gt;[rclone-browser]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;command-line-tools&quot;&gt;Command line tools&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;[7zip]&lt;&#x2F;li&gt;
+&lt;li&gt;[aliyundrive-webdav]&lt;&#x2F;li&gt;
+&lt;li&gt;[aria2]&lt;&#x2F;li&gt;
+&lt;li&gt;[bat]&lt;&#x2F;li&gt;
+&lt;li&gt;[caddy]&lt;&#x2F;li&gt;
+&lt;li&gt;[calibre]&lt;&#x2F;li&gt;
+&lt;li&gt;[clash]&lt;&#x2F;li&gt;
+&lt;li&gt;[cmake]&lt;&#x2F;li&gt;
+&lt;li&gt;[conan]&lt;&#x2F;li&gt;
+&lt;li&gt;[ffmpeg]&lt;&#x2F;li&gt;
+&lt;li&gt;[gh]&lt;&#x2F;li&gt;
+&lt;li&gt;[git]&lt;&#x2F;li&gt;
+&lt;li&gt;[gnupg]&lt;&#x2F;li&gt;
+&lt;li&gt;[gradle]&lt;&#x2F;li&gt;
+&lt;li&gt;[htmlq]&lt;&#x2F;li&gt;
+&lt;li&gt;[imagemagick]&lt;&#x2F;li&gt;
+&lt;li&gt;[jq]&lt;&#x2F;li&gt;
+&lt;li&gt;[meson]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;dylanaraps&#x2F;neofetch&quot;&gt;neofetch&lt;&#x2F;a&gt; A CLI system information tool written in BASH that supports displaying images.&lt;&#x2F;li&gt;
+&lt;li&gt;[neovim]&lt;&#x2F;li&gt;
+&lt;li&gt;[nginx]&lt;&#x2F;li&gt;
+&lt;li&gt;[ninja]&lt;&#x2F;li&gt;
+&lt;li&gt;[nssm]&lt;&#x2F;li&gt;
+&lt;li&gt;[ntop]&lt;&#x2F;li&gt;
+&lt;li&gt;[nvm]&lt;&#x2F;li&gt;
+&lt;li&gt;[rclone]&lt;&#x2F;li&gt;
+&lt;li&gt;[starship]&lt;&#x2F;li&gt;
+&lt;li&gt;[stream-url]&lt;&#x2F;li&gt;
+&lt;li&gt;[sudo]&lt;&#x2F;li&gt;
+&lt;li&gt;[telegram]&lt;&#x2F;li&gt;
+&lt;li&gt;[termius]&lt;&#x2F;li&gt;
+&lt;li&gt;[transfer]&lt;&#x2F;li&gt;
+&lt;li&gt;[v2ray]&lt;&#x2F;li&gt;
+&lt;li&gt;[ventoy]&lt;&#x2F;li&gt;
+&lt;li&gt;[xh]&lt;&#x2F;li&gt;
+&lt;li&gt;[yt-dlp]&lt;&#x2F;li&gt;
+&lt;li&gt;[zola]&lt;&#x2F;li&gt;
+&lt;li&gt;[zoxide]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;editors&quot;&gt;Editors&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;[neovim]&lt;&#x2F;li&gt;
+&lt;li&gt;[vim]&lt;&#x2F;li&gt;
+&lt;li&gt;[vscode]&lt;&#x2F;li&gt;
+&lt;li&gt;[sublime-text]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;linux-only&quot;&gt;linux only&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.fail2ban.org&#x2F;&quot;&gt;fall2ban&lt;&#x2F;a&gt; Bans IPs after too many failed authentication attempts&lt;&#x2F;li&gt;
+&lt;li&gt;[htop]&lt;&#x2F;li&gt;
+&lt;li&gt;[iftop]&lt;&#x2F;li&gt;
+&lt;li&gt;[nload]&lt;&#x2F;li&gt;
+&lt;li&gt;[sway]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;windows-only&quot;&gt;windows only&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[aida64extreme]&lt;&#x2F;li&gt;
+&lt;li&gt;[autohotkey2]&lt;&#x2F;li&gt;
+&lt;li&gt;[ccleaner]&lt;&#x2F;li&gt;
+&lt;li&gt;[cpu-z]&lt;&#x2F;li&gt;
+&lt;li&gt;[diskgenius-zh]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bmatzelle&#x2F;gow&quot;&gt;gow&lt;&#x2F;a&gt; Unix command line utilities installer for Windows.&lt;&#x2F;li&gt;
+&lt;li&gt;[HearthStoneDeckTracker]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;nssm.cc&#x2F;&quot;&gt;nssm&lt;&#x2F;a&gt; NSSM - the Non-Sucking Service Manager&lt;&#x2F;li&gt;
+&lt;li&gt;[potplayer]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ScoopInstaller&#x2F;Scoop&quot;&gt;scoop&lt;&#x2F;a&gt; A command-line installer for Windows.&lt;&#x2F;li&gt;
+&lt;li&gt;[snipaste-beta]&lt;&#x2F;li&gt;
+&lt;li&gt;[Windows-Termial]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;ipad&quot;&gt;ipad&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;android&quot;&gt;android&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;chrome&quot;&gt;chrome&lt;&#x2F;h2&gt;
+</content>
+	</entry>
+</feed>

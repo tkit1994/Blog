@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title> - caffe</title>
+	<subtitle>My person blog built with zola.</subtitle>
+	<link href="/tags/caffe/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="/"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2018-06-08T14:37:46+00:00</updated>
+	<id>/tags/caffe/atom.xml</id>
+	<entry xml:lang="en">
+		<title>编译caffe时使用本地的protobuf</title>
+		<published>2018-06-08T14:37:46+00:00</published>
+		<updated>2018-06-08T14:37:46+00:00</updated>
+		<link rel="alternate" href="/use-local-protobuf-when-compiling-caffe/" type="text/html"/>
+		<id>/use-local-protobuf-when-compiling-caffe/</id>
+		<content type="html">&lt;h2 id=&quot;xia-zai-bing-bian-yi-protobuf&quot;&gt;下载并编译protobuf&lt;&#x2F;h2&gt;
+&lt;p&gt;Protobuf的项目主页可以在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&quot;&gt;github&lt;&#x2F;a&gt;上找到。在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&#x2F;releases&quot;&gt;Release页面&lt;&#x2F;a&gt;可以下载对应的代码。下载&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&#x2F;releases&#x2F;download&#x2F;v3.5.1&#x2F;protobuf-cpp-3.5.1.tar.gz&quot;&gt;protobuf-cpp-3.5.1.tar.gz&lt;&#x2F;a&gt;，别的版本应该也可以。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;wget https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&#x2F;releases&#x2F;download&#x2F;v3.5.1&#x2F;protobuf-cpp-3.5.1.tar.gz
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;tar -xvf protobuf-cpp-3.5.1.tar.gz
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; protobuf-3.5.1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;.&#x2F;configure --prefix&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;make -j20
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;make install
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;bian-yi-caffe&quot;&gt;编译caffe&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;unrar x caffe-sal.rar
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; caffe-sal
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;cp Makefile.config.example Makefile.config
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;编辑&lt;code&gt;Makefile.config&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;修改&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;INCLUDE_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt; &#x2F;usr&#x2F;local&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LIBRARY_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt; &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;为&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;INCLUDE_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;include &#x2F;usr&#x2F;local&#x2F;include &#x2F;usr&#x2F;include&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LIBRARY_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;lib &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib &#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;设置&lt;code&gt;PATH&lt;&#x2F;code&gt;环境变量，因为要使用刚才编译好的&lt;code&gt;protoc&lt;&#x2F;code&gt;,然后进行编译,j后面的数字是要使用的线程数，一般为cpu的线程数+1,只影响编译的速度&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ export PATH=${HOME}&#x2F;.local&#x2F;bin:$PATH
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ which protoc
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;&#x2F;home&#x2F;ncepu&#x2F;.local&#x2F;bin&#x2F;protoc
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ make -j41
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;每次运行程序前设置环境变量&lt;code&gt;LD_LIBRARY_PATH&lt;&#x2F;code&gt;,或者把它加到.bashrc里面去。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;export &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LD_LIBRARY_PATH&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;}&#x2F;.local&#x2F;lib:$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LD_LIBRARY_PATH
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;cha-kan-lian-jie-ku-de-ban-ben&quot;&gt;查看链接库的版本&lt;&#x2F;h2&gt;
+&lt;p&gt;用下面的命令查看caffe链接的库的版本，可以看到是刚才编译好的版本。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;ldd build&#x2F;tools&#x2F;caffe &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;grep protobuf
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;libprotobuf.so.15 =&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; &#x2F;home&#x2F;ncepu&#x2F;.local&#x2F;lib&#x2F;libprotobuf.so.15 (0x00007f7795fc1000&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+	</entry>
+</feed>

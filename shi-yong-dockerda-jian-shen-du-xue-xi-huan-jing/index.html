@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - 使用docker搭建深度学习环境</title>
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/mathtex-script-type.min.js" integrity="sha384-zWYbd0NBwgTsgIdFKVprSfTh1mbMPe5Hz1X3yY4Sd1h/K1cQoUe36OGwAGz/PcDy" crossorigin="anonymous"></script>
+              
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+                  onload="renderMathInElement(document.body);"></script>
+              
+          
+      
+
+      
+          <link rel="stylesheet" href="/site.css">
+          
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Tkit&#x27;s Blog</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="&#x2F;">Tkit&#x27;s Blog</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#docker" class="toc-link">Docker</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#xi-tong-huan-jing" class="toc-link">系统环境</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#an-zhuang-nvidiaqu-dong-yi-jing-an-zhuang-guo-de-ke-yi-tiao-guo" class="toc-link">安装Nvidia驱动（已经安装过的可以跳过）</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#an-zhuang-docker-cehe-nvidia-docker" class="toc-link">安装Docker-ce和Nvidia-Docker</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#an-zhuang-docker-ce" class="toc-link">安装Docker-ce</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#an-zhuang-nvidia-docker" class="toc-link">安装Nvidia-docker</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#pei-zhi-docker" class="toc-link">配置Docker</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#you-hua-dockerhublian-jie-ke-xuan" class="toc-link">优化Dockerhub连接(可选)</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#shi-yong-docker" class="toc-link">使用docker</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#jian-dan-shi-yong" class="toc-link">简单使用</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#shi-yong-nvidiati-gong-de-cuda-cudnnhuan-jing-jing-xiang" class="toc-link">使用Nvidia提供的cuda&amp;cudnn环境镜像</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/#shi-yong-dockerfile" class="toc-link">使用Dockerfile</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="&#x2F;shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing&#x2F;">使用docker搭建深度学习环境</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2018-06-10</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <h2 id="docker">Docker</h2>
+<p>Docker是一种虚拟化容器，可能把运行环境与操作系统隔离起来，使开发环境与操作系统分离，方便多个开发环境的管理。与虚拟机相比，它更加轻量，方便。</p>
+<h2 id="xi-tong-huan-jing">系统环境</h2>
+<ul>
+<li>Ubuntu 16.04 LTS</li>
+<li>Nvidia GTX Titan Xp(其它Nvidia的显卡应该也可以)</li>
+</ul>
+<h2 id="an-zhuang-nvidiaqu-dong-yi-jing-an-zhuang-guo-de-ke-yi-tiao-guo">安装Nvidia驱动（已经安装过的可以跳过）</h2>
+<p>可以参照这篇<a href="https://websiteforstudents.com/install-proprietary-nvidia-gpu-drivers-on-ubuntu-16-04-17-10-18-04/">文章</a></p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">sudo add-apt-repository ppa:graphics-drivers/ppa
+</span><span style="color:#fdf4c1;">sudo apt update
+</span><span style="color:#fdf4c1;">sudo apt install nvidia-387
+</span></code></pre>
+<h2 id="an-zhuang-docker-cehe-nvidia-docker">安装Docker-ce和Nvidia-Docker</h2>
+<h3 id="an-zhuang-docker-ce">安装Docker-ce</h3>
+<p>docker-ce的安装可以参照这里的<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/#uninstall-old-versions">官方文档</a></p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;">## 卸载Ubuntu官方源中的docker.io（如果之前安装了的话）
+</span><span style="color:#fdf4c1;">$ sudo apt-get remove docker docker-engine docker.io
+</span><span style="font-style:italic;color:#928374;">## 更新apt package index.
+</span><span style="color:#fdf4c1;">$ sudo apt-get update
+</span><span style="font-style:italic;color:#928374;">## 安装一些要用到了一些包
+</span><span style="color:#fdf4c1;">$ sudo apt-get install \
+</span><span style="color:#fdf4c1;">    apt-transport-https \
+</span><span style="color:#fdf4c1;">    ca-certificates \
+</span><span style="color:#fdf4c1;">    curl \
+</span><span style="color:#fdf4c1;">    software-properties-common
+</span><span style="font-style:italic;color:#928374;">## 添加docker官方的GPG KEY
+</span><span style="color:#fdf4c1;">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sudo apt-key add -
+</span><span style="font-style:italic;color:#928374;">## 添加docker官方的源
+</span><span style="color:#fdf4c1;">$ sudo add-apt-repository \
+</span><span style="color:#fdf4c1;">   </span><span style="color:#b8bb26;">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+</span><span style="color:#b8bb26;">   $(</span><span style="color:#fdf4c1;">lsb_release -cs</span><span style="color:#b8bb26;">) \
+</span><span style="color:#b8bb26;">   stable&quot;
+</span><span style="font-style:italic;color:#928374;">## 更新apt package index.
+</span><span style="color:#fdf4c1;">$ sudo apt-get update
+</span><span style="font-style:italic;color:#928374;">## 安装docker-ce
+</span><span style="color:#fdf4c1;">$ sudo apt-get install docker-ce
+</span></code></pre>
+<h3 id="an-zhuang-nvidia-docker">安装Nvidia-docker</h3>
+<p>在docker-ce中并不能使用GPU,要安装nvidia-docker才可以，nvidia-docker的安装可以参照其<a href="https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0)">官方文档</a></p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;">## 配置软件源
+</span><span style="color:#fdf4c1;">$ curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey </span><span style="color:#fe8019;">| </span><span>\
+</span><span>  </span><span style="color:#fdf4c1;">sudo apt-key add -
+</span><span style="color:#fdf4c1;">$ distribution=$(</span><span style="color:#fabd2f;">.</span><span style="color:#fdf4c1;"> /etc/os-release</span><span style="color:#fe8019;">;</span><span style="color:#fabd2f;">echo </span><span style="color:#fdf4c1;">$ID$VERSION_ID)
+</span><span style="color:#fdf4c1;">$ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list </span><span style="color:#fe8019;">| </span><span>\
+</span><span>  </span><span style="color:#fdf4c1;">sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+</span><span style="color:#fdf4c1;">sudo apt-get update
+</span><span style="font-style:italic;color:#928374;">## 安装Nvidia-docker
+</span><span style="color:#fdf4c1;">$ sudo apt-get install nvidia-docker2
+</span></code></pre>
+<h3 id="pei-zhi-docker">配置Docker</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;">## 启动Docker服务
+</span><span style="color:#fdf4c1;">sudo service docker start
+</span><span style="font-style:italic;color:#928374;">## 将当前用户加入docker group
+</span><span style="color:#fdf4c1;">sudo gpasswd -a $USER docker
+</span></code></pre>
+<h3 id="you-hua-dockerhublian-jie-ke-xuan">优化Dockerhub连接(可选)</h3>
+<p><a href="https://hub.docker.com/">Dockerhub</a>是一个托管docker镜像的地方，就像<a href="https://github.com/">Github</a>是一个托管代码的地方一样。上面有大量别人已经配置好的docker环境可以直接使用，十分方便。但是在国内访问十分缓慢。</p>
+<p>可以参照这个<a href="https://blog.csdn.net/evandeng2009/article/details/53893789">博客</a>使用阿里云容器hub对Dockerhub进行加速，阿里云容器hub的加速是免费的，实测在学校能达到大概1M/s，而直接连接Dockerhub的速度则惨不忍睹。</p>
+<p><img src="https://s2.loli.net/2022/09/12/T8F5iIbmlevS3zH.png" alt="阿里云容器hub" /></p>
+<p>复制上面的专属加速地层地址后编辑<code>/etc/docker//etc/docker/daemon.json</code>
+在后面加入如下一行(注意json的格式，要写在<code>{}</code>里面，上一行结尾要有<code>,</code>)：</p>
+<pre data-lang="json" style="background-color:#282828;color:#fdf4c1aa;" class="language-json "><code class="language-json" data-lang="json"><span style="color:#b8bb26;">&quot;registry-mirrosrs&quot;</span><span>:[</span><span style="color:#b8bb26;">&quot;刚才复制的地址&quot;</span><span>]
+</span></code></pre>
+<p><img src="https://s2.loli.net/2022/09/12/zAybL5qoOTdHpGM.png" alt="修改daemon.json" /></p>
+<p>至此Docker和Nvidia环境安装配置完成</p>
+<h2 id="shi-yong-docker">使用docker</h2>
+<h3 id="jian-dan-shi-yong">简单使用</h3>
+<p>一些常用的镜像可以直接在dockerhub上搜索，然后通过dcoker运行。比如下面的这个<a href="https://hub.docker.com/r/tensorflow/tensorflow/">Tensorflow</a>, 通过下面的这个命令即可开箱及用。</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">nvidia-docker run -it -p 8888:8888 tensorflow/tensorflow:latest-gpu
+</span></code></pre>
+<h3 id="shi-yong-nvidiati-gong-de-cuda-cudnnhuan-jing-jing-xiang">使用Nvidia提供的cuda&amp;cudnn环境镜像</h3>
+<p>如果在电脑上安装多个版本的<code>cuda</code>、<code>cudnn</code>等库并且管理其版本是一件很麻烦的事情。有了docker之后可以使用Nvidia官方提供的docker镜像，在这些镜像中cuda和cudnn都是已经安装配置好了的。如果dockerhub上面没有我们想要的一些环境的话，可以在这个环境的基础上继续构建我们的环境。</p>
+<p>以<code>8.0-cudnn5-devel-ubuntu16.04</code>为例：</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">nvidia-docker run --name test -it nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04 bash
+</span></code></pre>
+<p>如下图片所示可以进入对应的环境，然后可以像正常使用Linux一样继续构建环境。</p>
+<p><img src="https://s2.loli.net/2022/09/12/YqjedI5EOHlUK8L.png" alt="8.0-cudnn5-devel-ubuntu16.04" /></p>
+<p>要退出环境的话，输入<code>exit</code>或者使用快捷键<code>ctrl=d</code>就可以了。</p>
+<p>配置好环境退出后后使用可以使用<code>docker commit</code>将<code>container</code>保存成<code>image</code>从而使环境持久化，方便生成同样的环境。</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ docker commit test test:test
+</span><span style="color:#fdf4c1;">sha256:e9338a3b4aede076ab566c44b1127f5c1b18fd3dcb7cb3e02e19856f21db0c5b
+</span></code></pre>
+<p>可以通过下面的命令新建一个同样的环境</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">nvidia-docker run -it --name test01 test:test bash
+</span></code></pre>
+<p>如果只是想运行刚才的<code>container</code>的话，可以用<code>docker container start</code>命令。</p>
+<p>更加详细的使用方法可以参照Docker的<a href="https://docs.docker.com/">官方文档</a>和一些中文教程。</p>
+<h3 id="shi-yong-dockerfile">使用Dockerfile</h3>
+<p>Dockerfile可以用来自动化构建Docker Image.</p>
+<h4 id="gou-jian-caffe-sal">构建caffe-sal</h4>
+<p>参考caffe官方的<a href="https://github.com/BVLC/caffe/tree/master/docker">Dockerfile</a>编写自己的Docerfile</p>
+<p>目录结构</p>
+<p><img src="https://s2.loli.net/2022/09/12/8SvG21YhMFlLdVs.png" alt="目结构" /></p>
+<p>Dockerfile的内容</p>
+<pre data-lang="Dockerfile" style="background-color:#282828;color:#fdf4c1aa;" class="language-Dockerfile "><code class="language-Dockerfile" data-lang="Dockerfile"><span style="color:#fa5c4b;">FROM</span><span> nvidia/cuda
+</span><span>
+</span><span style="color:#fa5c4b;">RUN </span><span>apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+</span><span> cpio \
+</span><span>        build-essential \
+</span><span>        git \
+</span><span>        wget \
+</span><span>        numactl \
+</span><span>        vim \
+</span><span>        libopenblas-dev\
+</span><span>        screen \
+</span><span>        libmlx4-1 libmlx5-1 ibutils  rdmacm-utils libibverbs1 ibverbs-utils perftest infiniband-diags \
+</span><span>        openmpi-bin libopenmpi-dev \
+</span><span>        libboost-all-dev \
+</span><span>        libgflags-dev \
+</span><span>        libgoogle-glog-dev \
+</span><span>        libhdf5-serial-dev \
+</span><span>        libleveldb-dev \
+</span><span>        liblmdb-dev \
+</span><span>        libopencv-dev \
+</span><span>        libprotobuf-dev \
+</span><span>        libsnappy-dev \
+</span><span>        protobuf-compiler
+</span><span>
+</span><span style="color:#fa5c4b;">ENV </span><span>CAFFE_ROOT=/opt/caffe
+</span><span style="color:#fa5c4b;">WORKDIR </span><span>$CAFFE_ROOT
+</span><span>
+</span><span style="color:#fa5c4b;">ADD </span><span>caffe-sal caffe-sal
+</span><span style="color:#fa5c4b;">WORKDIR </span><span>$CAFFE_ROOT/caffe-sal
+</span><span style="color:#fa5c4b;">ADD </span><span>Makefile.config Makefile.config
+</span><span>
+</span><span style="color:#fa5c4b;">RUN </span><span>make -j40
+</span></code></pre>
+<p>Makefile.config的内容</p>
+<pre data-lang="Makefile" style="background-color:#282828;color:#fdf4c1aa;" class="language-Makefile "><code class="language-Makefile" data-lang="Makefile"><span style="font-style:italic;color:#928374;">### Refer to http://caffe.berkeleyvision.org/installation.html
+</span><span style="font-style:italic;color:#928374;">## Contributions simplifying and improving our build system are welcome!
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## cuDNN acceleration switch (uncomment to build with cuDNN).
+</span><span style="font-style:italic;color:#928374;">## USE_CUDNN := 1
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## CPU-only switch (uncomment to build without GPU support).
+</span><span style="font-style:italic;color:#928374;">## CPU_ONLY := 1
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## To customize your choice of compiler, uncomment and set the following.
+</span><span style="font-style:italic;color:#928374;">## N.B. the default for Linux is g++ and the default for OSX is clang++
+</span><span style="font-style:italic;color:#928374;">## CUSTOM_CXX := g++
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## CUDA directory contains bin/ and lib/ directories that we need.
+</span><span style="color:#fdf4c1;">CUDA_DIR </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">/usr/local/cuda
+</span><span style="font-style:italic;color:#928374;">## On Ubuntu 14.04, if cuda tools are installed via
+</span><span style="font-style:italic;color:#928374;">## &quot;sudo apt-get install nvidia-cuda-toolkit&quot; then use this instead:
+</span><span style="font-style:italic;color:#928374;">## CUDA_DIR := /usr
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## CUDA architecture setting: going with all of them.
+</span><span style="font-style:italic;color:#928374;">## For CUDA &lt; 6.0, comment the *_50 lines for compatibility.
+</span><span style="color:#fdf4c1;">CUDA_ARCH </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">-gencode arch=compute_30,code=sm_30 \
+</span><span style="color:#b8bb26;">  -gencode arch=compute_35,code=sm_35 \
+</span><span style="color:#b8bb26;">  -gencode arch=compute_50,code=sm_50 \
+</span><span style="color:#b8bb26;">  -gencode arch=compute_50,code=compute_50
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## BLAS choice:
+</span><span style="font-style:italic;color:#928374;">## atlas for ATLAS (default)
+</span><span style="font-style:italic;color:#928374;">## mkl for MKL
+</span><span style="font-style:italic;color:#928374;">## open for OpenBlas
+</span><span style="color:#fdf4c1;">BLAS </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">open
+</span><span style="font-style:italic;color:#928374;">## Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
+</span><span style="font-style:italic;color:#928374;">## Leave commented to accept the defaults for your choice of BLAS
+</span><span style="font-style:italic;color:#928374;">## (which should work)!
+</span><span style="font-style:italic;color:#928374;">## BLAS_INCLUDE := /path/to/your/blas
+</span><span style="font-style:italic;color:#928374;">## BLAS_LIB := /path/to/your/blas
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## Homebrew puts openblas in a directory that is not on the standard search path
+</span><span style="font-style:italic;color:#928374;">## BLAS_INCLUDE := $(shell brew --prefix openblas)/include
+</span><span style="font-style:italic;color:#928374;">## BLAS_LIB := $(shell brew --prefix openblas)/lib
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## This is required only if you will compile the matlab interface.
+</span><span style="font-style:italic;color:#928374;">## MATLAB directory should contain the mex binary in /bin.
+</span><span style="font-style:italic;color:#928374;">## MATLAB_DIR := /usr/local
+</span><span style="font-style:italic;color:#928374;">## MATLAB_DIR := /Applications/MATLAB_R2012b.app
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## NOTE: this is required only if you will compile the python interface.
+</span><span style="font-style:italic;color:#928374;">## We need to be able to find Python.h and numpy/arrayobject.h.
+</span><span style="color:#fdf4c1;">PYTHON_INCLUDE </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">/usr/include/python2.7 \
+</span><span style="color:#b8bb26;">  /usr/lib/python2.7/dist-packages/numpy/core/include
+</span><span style="font-style:italic;color:#928374;">## Anaconda Python distribution is quite popular. Include path:
+</span><span style="font-style:italic;color:#928374;">## Verify anaconda location, sometimes it&#39;s in root.
+</span><span style="font-style:italic;color:#928374;">## ANACONDA_HOME := $(HOME)/anaconda
+</span><span style="font-style:italic;color:#928374;">## PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
+</span><span style="font-style:italic;color:#928374;">  # $(ANACONDA_HOME)/include/python2.7 \
+</span><span style="font-style:italic;color:#928374;">  # $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \
+</span><span style="font-style:italic;color:#928374;">
+</span><span style="font-style:italic;color:#928374;">## We need to be able to find libpythonX.X.so or .dylib.
+</span><span style="color:#fdf4c1;">PYTHON_LIB </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">/usr/lib
+</span><span style="font-style:italic;color:#928374;">## PYTHON_LIB := $(ANACONDA_HOME)/lib
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## Homebrew installs numpy in a non standard path (keg only)
+</span><span style="font-style:italic;color:#928374;">## PYTHON_INCLUDE += $(dir $(shell python -c &#39;import numpy.core; print(numpy.core.__file__)&#39;))/include
+</span><span style="font-style:italic;color:#928374;">## PYTHON_LIB += $(shell brew --prefix numpy)/lib
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## Uncomment to support layers written in Python (will link against Python libs)
+</span><span style="font-style:italic;color:#928374;">## WITH_PYTHON_LAYER := 1
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## Whatever else you find you need goes here.
+</span><span style="color:#fdf4c1;">INCLUDE_DIRS </span><span style="color:#fe8019;">:= </span><span style="color:#fa5c4b;">$(</span><span style="color:#fdf4c1;">PYTHON_INCLUDE</span><span style="color:#fa5c4b;">) ${</span><span style="color:#fdf4c1;">HOME</span><span style="color:#fa5c4b;">}</span><span style="color:#b8bb26;">/.local/include /usr/local/include /usr/include/hdf5/serial/
+</span><span style="color:#fdf4c1;">LIBRARY_DIRS </span><span style="color:#fe8019;">:= </span><span style="color:#fa5c4b;">$(</span><span style="color:#fdf4c1;">PYTHON_LIB</span><span style="color:#fa5c4b;">) ${</span><span style="color:#fdf4c1;">HOME</span><span style="color:#fa5c4b;">}</span><span style="color:#b8bb26;">/.local/lib /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies
+</span><span style="font-style:italic;color:#928374;">## INCLUDE_DIRS += $(shell brew --prefix)/include
+</span><span style="font-style:italic;color:#928374;">## LIBRARY_DIRS += $(shell brew --prefix)/lib
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## Uncomment to use `pkg-config` to specify OpenCV library paths.
+</span><span style="font-style:italic;color:#928374;">## (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)
+</span><span style="font-style:italic;color:#928374;">## USE_PKG_CONFIG := 1
+</span><span>
+</span><span style="color:#fdf4c1;">BUILD_DIR </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">build
+</span><span style="color:#fdf4c1;">DISTRIBUTE_DIR </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">distribute
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171
+</span><span style="font-style:italic;color:#928374;">## DEBUG := 1
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## The ID of the GPU that &#39;make runtest&#39; will use to run unit tests.
+</span><span style="color:#fdf4c1;">TEST_GPUID </span><span style="color:#fe8019;">:= </span><span style="color:#b8bb26;">0
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## enable pretty build (comment to see full commands)
+</span><span style="color:#fdf4c1;">Q </span><span style="color:#fe8019;">?= </span><span style="color:#b8bb26;">@
+</span><span>
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;">## 运行构建命令
+</span><span style="color:#fdf4c1;">$ docker build --rm -t caffe-sal:latest .
+</span></code></pre>
+<p>构建结果：</p>
+<p><img src="https://s2.loli.net/2022/09/12/9pyLmWl6eDs4U87.png" alt="构建结果" /></p>
+<p>运行构建好的<code>Image</code>:</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">nvidia-docker run it caffe-sal:latest bash
+</span></code></pre>
+<p>运行结果</p>
+<p><img src="https://s2.loli.net/2022/09/12/Fb2TBnStfR9lUcq.png" alt="运行结果" /></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="/tags/docker/">#docker</a>
+                    
+                        <a href="/tags/shen-du-xue-xi/">#深度学习</a>
+                    
+                        <a href="/tags/huan-jing-da-jian/">#环境搭建</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="&#x2F;using-latex-in-matplotlib&#x2F;">‹ 在matplotlib中使用latex渲染</a>
+                    
+                    
+                        <a class="next" href="&#x2F;use-local-protobuf-when-compiling-caffe&#x2F;">编译caffe时使用本地的protobuf ›</a>
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="/even.js" ></script>
+      
+    </body>
+
+</html>

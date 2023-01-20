@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title> - k8s</title>
+	<subtitle>My person blog built with zola.</subtitle>
+	<link href="/categories/k8s/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="/"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2023-01-19T09:28:42+00:00</updated>
+	<id>/categories/k8s/atom.xml</id>
+	<entry xml:lang="en">
+		<title>config k8s in archlinux</title>
+		<published>2023-01-19T09:28:42+00:00</published>
+		<updated>2023-01-19T09:28:42+00:00</updated>
+		<link rel="alternate" href="/config-k8s-in-archlinux/" type="text/html"/>
+		<id>/config-k8s-in-archlinux/</id>
+		<content type="html">&lt;h2 id=&quot;install-packages&quot;&gt;Install packages&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;install-necessary-packages&quot;&gt;Install necessary packages&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;pacman -S --needed kubeadm kubelet kubectl
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;install-extra-useful-packages&quot;&gt;Install extra useful packages&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;pacman -S --needed helm kustomize k9s
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;generate-containerd-default-configuration&quot;&gt;Generate containerd default configuration&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;# Generate default configuration
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;mkdir -p &#x2F;etc&#x2F;containerd
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;containerd config default &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;tee &#x2F;etc&#x2F;containerd&#x2F;config.toml
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sed -i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;s&#x2F;SystemdCgroup = false&#x2F;SystemdCgroup = true&#x2F;g&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;\
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;	&#x2F;etc&#x2F;containerd&#x2F;config.toml
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sed -i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;s&#x2F;k8s.gcr.io&#x2F;registry.cn-hangzhou.aliyuncs.com\&#x2F;google_containers&#x2F;g&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;\
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;	&#x2F;etc&#x2F;containerd&#x2F;config.toml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;optional-config-crictl&quot;&gt;(Optional) config crictl&lt;&#x2F;h2&gt;
+&lt;pre style=&quot;background-color:#282828;color:#fdf4c1aa;&quot;&gt;&lt;code&gt;&lt;span&gt;crictl config --set  runtime-endpoint=unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;enable-and-start-services&quot;&gt;Enable and start services&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;systemctl enable --now kubelet.service containerd.service
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;better to reboot system beacuse for iptables-nft modules to load&lt;&#x2F;li&gt;
+&lt;li&gt;please disable swap for kubelet to run&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;run-kubeadm&quot;&gt;Run kubeadm&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;pull-images-from-aliyun&quot;&gt;pull images from aliyun&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubeadm config images pull \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --image-repository registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;kubeadm-init&quot;&gt;kubeadm init&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;POD_CIDR&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;10.244.0.0&#x2F;16&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;DNS_NAME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;tkit-vbox
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubeadm init \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --apiserver-advertise-address 0.0.0.0 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;	--apiserver-cert-extra-sans $DNS_NAME \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --image-repository registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --pod-network-cidr&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$POD_CIDR
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;untaint-control-plane&quot;&gt;Untaint control plane&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl taint node --all  node-role.kubernetes.io&#x2F;control-plane:NoSchedule-
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;config-k8s-network&quot;&gt;Config k8s network&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;flannel-io&#x2F;flannel&#x2F;master&#x2F;Documentation&#x2F;kube-flannel.yml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;load-balancer&quot;&gt;Load balancer&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;metallb&quot;&gt;Metallb&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;metallb&#x2F;metallb&#x2F;v0.13.7&#x2F;config&#x2F;manifests&#x2F;metallb-native.yaml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Config files:&lt;&#x2F;p&gt;
+&lt;p&gt;IpAddressPool.yml:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yml&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-yml &quot;&gt;&lt;code class=&quot;language-yml&quot; data-lang=&quot;yml&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;apiVersion&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;kind&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;IPAddressPool
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;metadata&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;ip-pool
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;namespace&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb-system
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;spec&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;addresses&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;192.168.123.50-192.168.123.90
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;L2Advertisement.yml:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yml&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-yml &quot;&gt;&lt;code class=&quot;language-yml&quot; data-lang=&quot;yml&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;apiVersion&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;kind&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;L2Advertisement
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;metadata&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;l2-advertisement
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;namespace&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb-system
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Apply config&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f IpAddressPool.yml
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f L2Advertisement.yml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;ingress&quot;&gt;Ingress&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;kong&quot;&gt;Kong&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;helm repo add kong https:&#x2F;&#x2F;charts.konghq.com
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;helm repo update
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;helm install --create-namespace --namespace kong kong kong&#x2F;kong
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;k8s-gateway-api&quot;&gt;k8s gateway api&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;kong-1&quot;&gt;Kong&lt;&#x2F;h3&gt;
+&lt;p&gt;install gateway api crds&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl kustomize &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;https:&#x2F;&#x2F;github.com&#x2F;kubernetes-sigs&#x2F;gateway-api&#x2F;config&#x2F;crd?ref=v0.5.1&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;install ingress controller with helm&lt;&#x2F;p&gt;
+&lt;p&gt;values.yaml&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;ingressController.env.feature_gates&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;GatewayAlpha=true
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;add gateway class add gateway&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;apiVersion: gateway.networking.k8s.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;kind: GatewayClass
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metadata:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  name: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  annotations:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    konghq.com&#x2F;gatewayclass-unmanaged: &amp;#39;true&amp;#39;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;spec:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  controllerName: konghq.com&#x2F;kic-gateway-controller
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;apiVersion: gateway.networking.k8s.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;kind: Gateway
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metadata:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  name: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;spec:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  gatewayClassName: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  listeners:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - name: proxy
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    port: 80
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    hostname: kong.example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    protocol: HTTP
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - name: proxy-ssl
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    port: 443
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    hostname: kong.example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    protocol: HTTPS
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;example http route&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;apiVersion: gateway.networking.k8s.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;kind: HTTPRoute
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metadata:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  name: echo
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  annotations:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    konghq.com&#x2F;strip-path: &amp;#39;true&amp;#39;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;spec:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  parentRefs:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - group: gateway.networking.k8s.io
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    kind: Gateway
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    name: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  hostnames:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - kong.example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  rules:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - backendRefs:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    - group: &amp;quot;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      kind: Service
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      name: echo
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      port: 80
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      weight: 1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    matches:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    - path:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;        type: PathPrefix
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;        value: &#x2F;echo
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;cert-manager&quot;&gt;cert-manager&lt;&#x2F;h2&gt;
+</content>
+	</entry>
+</feed>

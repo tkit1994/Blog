@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - 在matplotlib中使用latex渲染</title>
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/mathtex-script-type.min.js" integrity="sha384-zWYbd0NBwgTsgIdFKVprSfTh1mbMPe5Hz1X3yY4Sd1h/K1cQoUe36OGwAGz/PcDy" crossorigin="anonymous"></script>
+              
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+                  onload="renderMathInElement(document.body);"></script>
+              
+          
+      
+
+      
+          <link rel="stylesheet" href="/site.css">
+          
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Tkit&#x27;s Blog</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="&#x2F;">Tkit&#x27;s Blog</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="/using-latex-in-matplotlib/#dai-ma" class="toc-link">代码</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="&#x2F;using-latex-in-matplotlib&#x2F;">在matplotlib中使用latex渲染</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2019-09-12</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <h2 id="dai-ma">代码</h2>
+<p>在代码中加入如下的代码就可以在matplotlib中使用latex渲染文字</p>
+<pre data-lang="python" style="background-color:#282828;color:#fdf4c1aa;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#fa5c4b;">import </span><span>matplotlib
+</span><span style="color:#fdf4c1;">matplotlib.use(</span><span style="color:#b8bb26;">&quot;pgf&quot;</span><span style="color:#fdf4c1;">)
+</span><span>pgf_with_custom_preamble </span><span style="color:#fe8019;">= </span><span>{
+</span><span>    </span><span style="font-style:italic;color:#928374;"># &quot;font.size&quot;: 40,
+</span><span>    </span><span style="color:#b8bb26;">&quot;pgf.rcfonts&quot;</span><span>: </span><span style="color:#d3869b;">False</span><span>,
+</span><span>    </span><span style="color:#b8bb26;">&quot;text.usetex&quot;</span><span>: </span><span style="color:#d3869b;">True</span><span>,
+</span><span>    </span><span style="color:#b8bb26;">&quot;pgf.preamble&quot;</span><span>: [
+</span><span>        </span><span style="font-style:italic;color:#928374;"># math setup:
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;\usepackage{unicode-math}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;\usepackage</span><span style="color:#fdf4c1;">[utf8]</span><span style="color:#b8bb26;">{inputenc}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;\usepackage{xeCJK}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etmainfont{Times New Roman} % Set main font for ASCII&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etsansfont{Times New Roman}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etmonofont{Times New Roman}&quot;
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etCJKmainfont{SimSun}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etCJKsansfont{SimSun}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etCJKmonofont{SimSun}&quot;
+</span><span>    ],
+</span><span>    </span><span style="color:#b8bb26;">&quot;pdf.fonttype&quot;</span><span>: </span><span style="color:#d3869b;">42</span><span>,
+</span><span>}
+</span><span style="color:#fdf4c1;">matplotlib.rcParams.update(pgf_with_custom_preamble)
+</span></code></pre>
+<p>完整的代码如下：</p>
+<pre data-lang="python" style="background-color:#282828;color:#fdf4c1aa;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#fa5c4b;">import </span><span>matplotlib
+</span><span style="color:#fdf4c1;">matplotlib.use(</span><span style="color:#b8bb26;">&quot;pgf&quot;</span><span style="color:#fdf4c1;">)
+</span><span>pgf_with_custom_preamble </span><span style="color:#fe8019;">= </span><span>{
+</span><span>    </span><span style="font-style:italic;color:#928374;"># &quot;font.size&quot;: 40,
+</span><span>    </span><span style="color:#b8bb26;">&quot;pgf.rcfonts&quot;</span><span>: </span><span style="color:#d3869b;">False</span><span>,
+</span><span>    </span><span style="color:#b8bb26;">&quot;text.usetex&quot;</span><span>: </span><span style="color:#d3869b;">True</span><span>,
+</span><span>    </span><span style="color:#b8bb26;">&quot;pgf.preamble&quot;</span><span>: [
+</span><span>        </span><span style="font-style:italic;color:#928374;"># math setup:
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;\usepackage{unicode-math}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;\usepackage</span><span style="color:#fdf4c1;">[utf8]</span><span style="color:#b8bb26;">{inputenc}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;\usepackage{xeCJK}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etmainfont{Times New Roman} % Set main font for ASCII&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etsansfont{Times New Roman}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etmonofont{Times New Roman}&quot;
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etCJKmainfont{SimSun}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etCJKsansfont{SimSun}&quot;</span><span>,
+</span><span>        </span><span style="color:#fa5c4b;">r</span><span style="color:#b8bb26;">&quot;</span><span style="color:#d3869b;">\s</span><span style="color:#b8bb26;">etCJKmonofont{SimSun}&quot;
+</span><span>    ],
+</span><span>    </span><span style="color:#b8bb26;">&quot;pdf.fonttype&quot;</span><span>: </span><span style="color:#d3869b;">42</span><span>,
+</span><span>}
+</span><span style="color:#fdf4c1;">matplotlib.rcParams.update(pgf_with_custom_preamble)
+</span><span>
+</span><span style="color:#fa5c4b;">import </span><span>matplotlib.pyplot </span><span style="color:#fa5c4b;">as </span><span>plt
+</span><span style="color:#fa5c4b;">import </span><span>pandas </span><span style="color:#fa5c4b;">as </span><span>pd
+</span><span style="color:#fa5c4b;">import </span><span>seaborn </span><span style="color:#fa5c4b;">as </span><span>sns
+</span><span>
+</span><span style="color:#fdf4c1;">sns.set()
+</span><span>df </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">pd.read_hdf(</span><span style="color:#b8bb26;">&#39;./label.h5&#39;</span><span style="color:#fdf4c1;">)
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## 性别分布
+</span><span>gender </span><span style="color:#fe8019;">= </span><span>df[</span><span style="color:#b8bb26;">&#39;gender&#39;</span><span>]
+</span><span>
+</span><span>gender </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">gender.fillna(</span><span style="color:#b8bb26;">&#39;unkonwn&#39;</span><span style="color:#fdf4c1;">)
+</span><span>counts </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">pd.value_counts(gender)
+</span><span style="color:#fdf4c1;">plt.figure(figsize</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">(</span><span style="color:#d3869b;">10</span><span style="color:#fdf4c1;">, </span><span style="color:#d3869b;">8</span><span style="color:#fdf4c1;">))
+</span><span style="color:#fdf4c1;">counts.plot.pie(legend</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">, autopct</span><span style="color:#fe8019;">=</span><span style="color:#fa5c4b;">lambda </span><span style="color:#fdf4c1;">p: </span><span style="color:#b8bb26;">&#39;</span><span style="color:#fdf4c1;">{:.2f}</span><span style="color:#b8bb26;">%(</span><span style="color:#fdf4c1;">{:.0f}</span><span style="color:#b8bb26;">)&#39;</span><span style="color:#fdf4c1;">.format(
+</span><span style="color:#fdf4c1;">    p, (p</span><span style="color:#fe8019;">/</span><span style="color:#d3869b;">100</span><span style="color:#fdf4c1;">)</span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;">counts.sum()), title</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;Gender distribution&quot;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">plt.savefig(</span><span style="color:#b8bb26;">&#39;./figures/gender.png&#39;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">plt.savefig(</span><span style="color:#b8bb26;">&#39;./figures/gender&#39;</span><span style="color:#fdf4c1;">)
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## 年龄分布
+</span><span>
+</span><span>age </span><span style="color:#fe8019;">= </span><span>df[</span><span style="color:#b8bb26;">&#39;age&#39;</span><span>]
+</span><span style="color:#fdf4c1;">plt.clf()
+</span><span>age </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">age.dropna()
+</span><span style="color:#fdf4c1;">sns.distplot(age)
+</span><span style="color:#fdf4c1;">plt.title(</span><span style="color:#b8bb26;">&#39;kde plot&#39;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">plt.savefig(</span><span style="color:#b8bb26;">&#39;./figures/age.png&#39;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">plt.savefig(</span><span style="color:#b8bb26;">&#39;./figures/age&#39;</span><span style="color:#fdf4c1;">)
+</span><span>
+</span><span style="font-style:italic;color:#928374;">## 诊断分布
+</span><span>
+</span><span>tmp </span><span style="color:#fe8019;">= </span><span>df.iloc[:, </span><span style="color:#d3869b;">2</span><span>:]
+</span><span style="color:#fdf4c1;">plt.clf()
+</span><span>counts </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">tmp.sum() </span><span style="color:#fe8019;">/ </span><span>tmp.shape[</span><span style="color:#d3869b;">0</span><span>]
+</span><span style="color:#fdf4c1;">counts.plot(kind</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&#39;bar&#39;</span><span style="color:#fdf4c1;">, title</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&#39;Percentage&#39;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">plt.tight_layout()
+</span><span style="color:#fdf4c1;">plt.savefig(</span><span style="color:#b8bb26;">&#39;./figures/diagnose.png&#39;</span><span style="color:#fdf4c1;">)
+</span><span>
+</span><span style="color:#fdf4c1;">plt.savefig(</span><span style="color:#b8bb26;">&#39;./figures/diagnose&#39;</span><span style="color:#fdf4c1;">)
+</span><span>
+</span></code></pre>
+<p>结果如图：</p>
+<p><img src="/using-latex-in-matplotlib/gender.svg" alt="gender" /></p>
+<p><img src="/using-latex-in-matplotlib/age.svg" alt="age" /></p>
+<p><img src="/using-latex-in-matplotlib/diagnose.svg" alt="dianose" /></p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="/tags/matplotlib/">#matplotlib</a>
+                    
+                        <a href="/tags/latex/">#latex</a>
+                    
+                        <a href="/tags/python/">#python</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="&#x2F;first-post&#x2F;">‹ A simple test for zola even theme</a>
+                    
+                    
+                        <a class="next" href="&#x2F;shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing&#x2F;">使用docker搭建深度学习环境 ›</a>
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="/even.js" ></script>
+      
+    </body>
+
+</html>

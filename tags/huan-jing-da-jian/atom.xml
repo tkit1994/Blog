@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title> - 环境搭建</title>
+	<subtitle>My person blog built with zola.</subtitle>
+	<link href="/tags/huan-jing-da-jian/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="/"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2018-06-10T10:18:22+00:00</updated>
+	<id>/tags/huan-jing-da-jian/atom.xml</id>
+	<entry xml:lang="en">
+		<title>使用docker搭建深度学习环境</title>
+		<published>2018-06-10T10:18:22+00:00</published>
+		<updated>2018-06-10T10:18:22+00:00</updated>
+		<link rel="alternate" href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/" type="text/html"/>
+		<id>/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/</id>
+		<content type="html">&lt;h2 id=&quot;docker&quot;&gt;Docker&lt;&#x2F;h2&gt;
+&lt;p&gt;Docker是一种虚拟化容器，可能把运行环境与操作系统隔离起来，使开发环境与操作系统分离，方便多个开发环境的管理。与虚拟机相比，它更加轻量，方便。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;xi-tong-huan-jing&quot;&gt;系统环境&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ubuntu 16.04 LTS&lt;&#x2F;li&gt;
+&lt;li&gt;Nvidia GTX Titan Xp(其它Nvidia的显卡应该也可以)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;an-zhuang-nvidiaqu-dong-yi-jing-an-zhuang-guo-de-ke-yi-tiao-guo&quot;&gt;安装Nvidia驱动（已经安装过的可以跳过）&lt;&#x2F;h2&gt;
+&lt;p&gt;可以参照这篇&lt;a href=&quot;https:&#x2F;&#x2F;websiteforstudents.com&#x2F;install-proprietary-nvidia-gpu-drivers-on-ubuntu-16-04-17-10-18-04&#x2F;&quot;&gt;文章&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo add-apt-repository ppa:graphics-drivers&#x2F;ppa
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt update
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt install nvidia-387
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;an-zhuang-docker-cehe-nvidia-docker&quot;&gt;安装Docker-ce和Nvidia-Docker&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;an-zhuang-docker-ce&quot;&gt;安装Docker-ce&lt;&#x2F;h3&gt;
+&lt;p&gt;docker-ce的安装可以参照这里的&lt;a href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;ubuntu&#x2F;#uninstall-old-versions&quot;&gt;官方文档&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 卸载Ubuntu官方源中的docker.io（如果之前安装了的话）
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get remove docker docker-engine docker.io
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 更新apt package index.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get update
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 安装一些要用到了一些包
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get install \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    apt-transport-https \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    ca-certificates \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    curl \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    software-properties-common
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 添加docker官方的GPG KEY
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ curl -fsSL https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;ubuntu&#x2F;gpg &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt-key add -
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 添加docker官方的源
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo add-apt-repository \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;   &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;deb [arch=amd64] https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;ubuntu \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;   $(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;lsb_release -cs&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;) \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;   stable&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 更新apt package index.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get update
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 安装docker-ce
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get install docker-ce
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;an-zhuang-nvidia-docker&quot;&gt;安装Nvidia-docker&lt;&#x2F;h3&gt;
+&lt;p&gt;在docker-ce中并不能使用GPU,要安装nvidia-docker才可以，nvidia-docker的安装可以参照其&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nvidia&#x2F;nvidia-docker&#x2F;wiki&#x2F;Installation-(version-2.0)&quot;&gt;官方文档&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 配置软件源
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;gpgkey &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span&gt;\
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt-key add -
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ distribution=$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; &#x2F;etc&#x2F;os-release&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ID$VERSION_ID)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;$distribution&#x2F;nvidia-docker.list &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span&gt;\
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;nvidia-docker.list
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt-get update
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 安装Nvidia-docker
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get install nvidia-docker2
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;pei-zhi-docker&quot;&gt;配置Docker&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 启动Docker服务
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo service docker start
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 将当前用户加入docker group
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo gpasswd -a $USER docker
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;you-hua-dockerhublian-jie-ke-xuan&quot;&gt;优化Dockerhub连接(可选)&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;hub.docker.com&#x2F;&quot;&gt;Dockerhub&lt;&#x2F;a&gt;是一个托管docker镜像的地方，就像&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;&quot;&gt;Github&lt;&#x2F;a&gt;是一个托管代码的地方一样。上面有大量别人已经配置好的docker环境可以直接使用，十分方便。但是在国内访问十分缓慢。&lt;&#x2F;p&gt;
+&lt;p&gt;可以参照这个&lt;a href=&quot;https:&#x2F;&#x2F;blog.csdn.net&#x2F;evandeng2009&#x2F;article&#x2F;details&#x2F;53893789&quot;&gt;博客&lt;&#x2F;a&gt;使用阿里云容器hub对Dockerhub进行加速，阿里云容器hub的加速是免费的，实测在学校能达到大概1M&#x2F;s，而直接连接Dockerhub的速度则惨不忍睹。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;T8F5iIbmlevS3zH.png&quot; alt=&quot;阿里云容器hub&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;复制上面的专属加速地层地址后编辑&lt;code&gt;&#x2F;etc&#x2F;docker&#x2F;&#x2F;etc&#x2F;docker&#x2F;daemon.json&lt;&#x2F;code&gt;
+在后面加入如下一行(注意json的格式，要写在&lt;code&gt;{}&lt;&#x2F;code&gt;里面，上一行结尾要有&lt;code&gt;,&lt;&#x2F;code&gt;)：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;registry-mirrosrs&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;:[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;刚才复制的地址&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;zAybL5qoOTdHpGM.png&quot; alt=&quot;修改daemon.json&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;至此Docker和Nvidia环境安装配置完成&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;shi-yong-docker&quot;&gt;使用docker&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;jian-dan-shi-yong&quot;&gt;简单使用&lt;&#x2F;h3&gt;
+&lt;p&gt;一些常用的镜像可以直接在dockerhub上搜索，然后通过dcoker运行。比如下面的这个&lt;a href=&quot;https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;tensorflow&#x2F;tensorflow&#x2F;&quot;&gt;Tensorflow&lt;&#x2F;a&gt;, 通过下面的这个命令即可开箱及用。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run -it -p 8888:8888 tensorflow&#x2F;tensorflow:latest-gpu
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;shi-yong-nvidiati-gong-de-cuda-cudnnhuan-jing-jing-xiang&quot;&gt;使用Nvidia提供的cuda&amp;amp;cudnn环境镜像&lt;&#x2F;h3&gt;
+&lt;p&gt;如果在电脑上安装多个版本的&lt;code&gt;cuda&lt;&#x2F;code&gt;、&lt;code&gt;cudnn&lt;&#x2F;code&gt;等库并且管理其版本是一件很麻烦的事情。有了docker之后可以使用Nvidia官方提供的docker镜像，在这些镜像中cuda和cudnn都是已经安装配置好了的。如果dockerhub上面没有我们想要的一些环境的话，可以在这个环境的基础上继续构建我们的环境。&lt;&#x2F;p&gt;
+&lt;p&gt;以&lt;code&gt;8.0-cudnn5-devel-ubuntu16.04&lt;&#x2F;code&gt;为例：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run --name test -it nvidia&#x2F;cuda:8.0-cudnn5-devel-ubuntu16.04 bash
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;如下图片所示可以进入对应的环境，然后可以像正常使用Linux一样继续构建环境。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;YqjedI5EOHlUK8L.png&quot; alt=&quot;8.0-cudnn5-devel-ubuntu16.04&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;要退出环境的话，输入&lt;code&gt;exit&lt;&#x2F;code&gt;或者使用快捷键&lt;code&gt;ctrl=d&lt;&#x2F;code&gt;就可以了。&lt;&#x2F;p&gt;
+&lt;p&gt;配置好环境退出后后使用可以使用&lt;code&gt;docker commit&lt;&#x2F;code&gt;将&lt;code&gt;container&lt;&#x2F;code&gt;保存成&lt;code&gt;image&lt;&#x2F;code&gt;从而使环境持久化，方便生成同样的环境。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ docker commit test test:test
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sha256:e9338a3b4aede076ab566c44b1127f5c1b18fd3dcb7cb3e02e19856f21db0c5b
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;可以通过下面的命令新建一个同样的环境&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run -it --name test01 test:test bash
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;如果只是想运行刚才的&lt;code&gt;container&lt;&#x2F;code&gt;的话，可以用&lt;code&gt;docker container start&lt;&#x2F;code&gt;命令。&lt;&#x2F;p&gt;
+&lt;p&gt;更加详细的使用方法可以参照Docker的&lt;a href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;&quot;&gt;官方文档&lt;&#x2F;a&gt;和一些中文教程。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;shi-yong-dockerfile&quot;&gt;使用Dockerfile&lt;&#x2F;h3&gt;
+&lt;p&gt;Dockerfile可以用来自动化构建Docker Image.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;gou-jian-caffe-sal&quot;&gt;构建caffe-sal&lt;&#x2F;h4&gt;
+&lt;p&gt;参考caffe官方的&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;BVLC&#x2F;caffe&#x2F;tree&#x2F;master&#x2F;docker&quot;&gt;Dockerfile&lt;&#x2F;a&gt;编写自己的Docerfile&lt;&#x2F;p&gt;
+&lt;p&gt;目录结构&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;8SvG21YhMFlLdVs.png&quot; alt=&quot;目结构&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Dockerfile的内容&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Dockerfile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Dockerfile &quot;&gt;&lt;code class=&quot;language-Dockerfile&quot; data-lang=&quot;Dockerfile&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; nvidia&#x2F;cuda
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;RUN &lt;&#x2F;span&gt;&lt;span&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y --no-install-recommends \
+&lt;&#x2F;span&gt;&lt;span&gt; cpio \
+&lt;&#x2F;span&gt;&lt;span&gt;        build-essential \
+&lt;&#x2F;span&gt;&lt;span&gt;        git \
+&lt;&#x2F;span&gt;&lt;span&gt;        wget \
+&lt;&#x2F;span&gt;&lt;span&gt;        numactl \
+&lt;&#x2F;span&gt;&lt;span&gt;        vim \
+&lt;&#x2F;span&gt;&lt;span&gt;        libopenblas-dev\
+&lt;&#x2F;span&gt;&lt;span&gt;        screen \
+&lt;&#x2F;span&gt;&lt;span&gt;        libmlx4-1 libmlx5-1 ibutils  rdmacm-utils libibverbs1 ibverbs-utils perftest infiniband-diags \
+&lt;&#x2F;span&gt;&lt;span&gt;        openmpi-bin libopenmpi-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libboost-all-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libgflags-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libgoogle-glog-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libhdf5-serial-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libleveldb-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        liblmdb-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libopencv-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libprotobuf-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libsnappy-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        protobuf-compiler
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;ENV &lt;&#x2F;span&gt;&lt;span&gt;CAFFE_ROOT=&#x2F;opt&#x2F;caffe
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;WORKDIR &lt;&#x2F;span&gt;&lt;span&gt;$CAFFE_ROOT
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;ADD &lt;&#x2F;span&gt;&lt;span&gt;caffe-sal caffe-sal
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;WORKDIR &lt;&#x2F;span&gt;&lt;span&gt;$CAFFE_ROOT&#x2F;caffe-sal
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;ADD &lt;&#x2F;span&gt;&lt;span&gt;Makefile.config Makefile.config
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;RUN &lt;&#x2F;span&gt;&lt;span&gt;make -j40
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Makefile.config的内容&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;### Refer to http:&#x2F;&#x2F;caffe.berkeleyvision.org&#x2F;installation.html
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Contributions simplifying and improving our build system are welcome!
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## cuDNN acceleration switch (uncomment to build with cuDNN).
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## USE_CUDNN := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CPU-only switch (uncomment to build without GPU support).
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CPU_ONLY := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## To customize your choice of compiler, uncomment and set the following.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## N.B. the default for Linux is g++ and the default for OSX is clang++
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUSTOM_CXX := g++
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUDA directory contains bin&#x2F; and lib&#x2F; directories that we need.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;CUDA_DIR &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;usr&#x2F;local&#x2F;cuda
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## On Ubuntu 14.04, if cuda tools are installed via
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## &amp;quot;sudo apt-get install nvidia-cuda-toolkit&amp;quot; then use this instead:
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUDA_DIR := &#x2F;usr
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUDA architecture setting: going with all of them.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## For CUDA &amp;lt; 6.0, comment the *_50 lines for compatibility.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;CUDA_ARCH &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;-gencode arch=compute_30,code=sm_30 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  -gencode arch=compute_35,code=sm_35 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  -gencode arch=compute_50,code=sm_50 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  -gencode arch=compute_50,code=compute_50
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS choice:
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## atlas for ATLAS (default)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## mkl for MKL
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## open for OpenBlas
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;BLAS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;open
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Custom (MKL&#x2F;ATLAS&#x2F;OpenBLAS) include and lib directories.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Leave commented to accept the defaults for your choice of BLAS
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## (which should work)!
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_INCLUDE := &#x2F;path&#x2F;to&#x2F;your&#x2F;blas
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_LIB := &#x2F;path&#x2F;to&#x2F;your&#x2F;blas
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Homebrew puts openblas in a directory that is not on the standard search path
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_INCLUDE := $(shell brew --prefix openblas)&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_LIB := $(shell brew --prefix openblas)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## This is required only if you will compile the matlab interface.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## MATLAB directory should contain the mex binary in &#x2F;bin.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## MATLAB_DIR := &#x2F;usr&#x2F;local
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## MATLAB_DIR := &#x2F;Applications&#x2F;MATLAB_R2012b.app
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## NOTE: this is required only if you will compile the python interface.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## We need to be able to find Python.h and numpy&#x2F;arrayobject.h.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;usr&#x2F;include&#x2F;python2.7 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  &#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;dist-packages&#x2F;numpy&#x2F;core&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Anaconda Python distribution is quite popular. Include path:
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Verify anaconda location, sometimes it&amp;#39;s in root.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## ANACONDA_HOME := $(HOME)&#x2F;anaconda
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_INCLUDE := $(ANACONDA_HOME)&#x2F;include \
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;  # $(ANACONDA_HOME)&#x2F;include&#x2F;python2.7 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;  # $(ANACONDA_HOME)&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;numpy&#x2F;core&#x2F;include \
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## We need to be able to find libpythonX.X.so or .dylib.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;usr&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_LIB := $(ANACONDA_HOME)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Homebrew installs numpy in a non standard path (keg only)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_INCLUDE += $(dir $(shell python -c &amp;#39;import numpy.core; print(numpy.core.__file__)&amp;#39;))&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_LIB += $(shell brew --prefix numpy)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Uncomment to support layers written in Python (will link against Python libs)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## WITH_PYTHON_LAYER := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Whatever else you find you need goes here.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;INCLUDE_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;include &#x2F;usr&#x2F;local&#x2F;include &#x2F;usr&#x2F;include&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LIBRARY_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;lib &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib &#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## INCLUDE_DIRS += $(shell brew --prefix)&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## LIBRARY_DIRS += $(shell brew --prefix)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Uncomment to use `pkg-config` to specify OpenCV library paths.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## USE_PKG_CONFIG := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;BUILD_DIR &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;build
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;DISTRIBUTE_DIR &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;distribute
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Uncomment for debugging. Does not work on OSX due to https:&#x2F;&#x2F;github.com&#x2F;BVLC&#x2F;caffe&#x2F;issues&#x2F;171
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## DEBUG := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## The ID of the GPU that &amp;#39;make runtest&amp;#39; will use to run unit tests.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;TEST_GPUID &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;0
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## enable pretty build (comment to see full commands)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;Q &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;?= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;@
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 运行构建命令
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ docker build --rm -t caffe-sal:latest .
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;构建结果：&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;9pyLmWl6eDs4U87.png&quot; alt=&quot;构建结果&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;运行构建好的&lt;code&gt;Image&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run it caffe-sal:latest bash
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;运行结果&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;Fb2TBnStfR9lUcq.png&quot; alt=&quot;运行结果&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
+</feed>

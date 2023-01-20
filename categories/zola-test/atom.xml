@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title> - zola-test</title>
+	<subtitle>My person blog built with zola.</subtitle>
+	<link href="/categories/zola-test/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="/"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2022-09-11T00:00:00+00:00</updated>
+	<id>/categories/zola-test/atom.xml</id>
+	<entry xml:lang="en">
+		<title>A simple test for zola even theme</title>
+		<published>2022-09-11T00:00:00+00:00</published>
+		<updated>2022-09-11T00:00:00+00:00</updated>
+		<link rel="alternate" href="/first-post/" type="text/html"/>
+		<id>/first-post/</id>
+		<content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;This is my first post, which is a post to test zola.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;markdown-code-block&quot;&gt;Markdown code block&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8ec07c;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;println!&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;Hello world&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;math&quot;&gt;Math&lt;&#x2F;h2&gt;
+&lt;p&gt;Inline math: \(e = mc^2\)&lt;&#x2F;p&gt;
+&lt;p&gt;Display math:
+$$e = mc^2$$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;images&quot;&gt;Images&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;11&#x2F;OKFpYnbjqaxUMBJ.png&quot; alt=&quot;test image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;table&quot;&gt;Table&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;a&lt;&#x2F;th&gt;&lt;th&gt;table&lt;&#x2F;th&gt;&lt;th&gt;in&lt;&#x2F;th&gt;&lt;th&gt;markdown&lt;&#x2F;th&gt;&lt;th&gt;!!&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;we&lt;&#x2F;td&gt;&lt;td&gt;ew&lt;&#x2F;td&gt;&lt;td&gt;we&lt;&#x2F;td&gt;&lt;td&gt;with a longish column inside it&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;list&quot;&gt;List&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;First
+&lt;ul&gt;
+&lt;li&gt;A&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Second
+&lt;ul&gt;
+&lt;li&gt;B&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;numbered-list&quot;&gt;Numbered List&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;First
+&lt;ol&gt;
+&lt;li&gt;A&lt;&#x2F;li&gt;
+&lt;li&gt;B&lt;&#x2F;li&gt;
+&lt;li&gt;C&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Second&lt;&#x2F;li&gt;
+&lt;li&gt;Third&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;iframe&quot;&gt;Iframe&lt;&#x2F;h2&gt;
+&lt;div &gt;
+    &lt;iframe src=&quot;https:&#x2F;&#x2F;www.youtube-nocookie.com&#x2F;embed&#x2F;dQw4w9WgXcQ&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;
+</content>
+	</entry>
+</feed>

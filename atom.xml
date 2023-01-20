@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title></title>
+	<subtitle>My person blog built with zola.</subtitle>
+	<link href="/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="/"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2023-01-19T09:28:42+00:00</updated>
+	<id>/atom.xml</id>
+	<entry xml:lang="en">
+		<title>config k8s in archlinux</title>
+		<published>2023-01-19T09:28:42+00:00</published>
+		<updated>2023-01-19T09:28:42+00:00</updated>
+		<link rel="alternate" href="/config-k8s-in-archlinux/" type="text/html"/>
+		<id>/config-k8s-in-archlinux/</id>
+		<content type="html">&lt;h2 id=&quot;install-packages&quot;&gt;Install packages&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;install-necessary-packages&quot;&gt;Install necessary packages&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;pacman -S --needed kubeadm kubelet kubectl
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;install-extra-useful-packages&quot;&gt;Install extra useful packages&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;pacman -S --needed helm kustomize k9s
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;generate-containerd-default-configuration&quot;&gt;Generate containerd default configuration&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;# Generate default configuration
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;mkdir -p &#x2F;etc&#x2F;containerd
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;containerd config default &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;tee &#x2F;etc&#x2F;containerd&#x2F;config.toml
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sed -i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;s&#x2F;SystemdCgroup = false&#x2F;SystemdCgroup = true&#x2F;g&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;\
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;	&#x2F;etc&#x2F;containerd&#x2F;config.toml
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sed -i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;s&#x2F;k8s.gcr.io&#x2F;registry.cn-hangzhou.aliyuncs.com\&#x2F;google_containers&#x2F;g&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;\
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;	&#x2F;etc&#x2F;containerd&#x2F;config.toml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;optional-config-crictl&quot;&gt;(Optional) config crictl&lt;&#x2F;h2&gt;
+&lt;pre style=&quot;background-color:#282828;color:#fdf4c1aa;&quot;&gt;&lt;code&gt;&lt;span&gt;crictl config --set  runtime-endpoint=unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;enable-and-start-services&quot;&gt;Enable and start services&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;systemctl enable --now kubelet.service containerd.service
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;better to reboot system beacuse for iptables-nft modules to load&lt;&#x2F;li&gt;
+&lt;li&gt;please disable swap for kubelet to run&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;run-kubeadm&quot;&gt;Run kubeadm&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;pull-images-from-aliyun&quot;&gt;pull images from aliyun&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubeadm config images pull \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --image-repository registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;kubeadm-init&quot;&gt;kubeadm init&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;POD_CIDR&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;10.244.0.0&#x2F;16&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;DNS_NAME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;tkit-vbox
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubeadm init \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --apiserver-advertise-address 0.0.0.0 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;	--apiserver-cert-extra-sans $DNS_NAME \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --image-repository registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    --pod-network-cidr&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$POD_CIDR
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;untaint-control-plane&quot;&gt;Untaint control plane&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl taint node --all  node-role.kubernetes.io&#x2F;control-plane:NoSchedule-
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;config-k8s-network&quot;&gt;Config k8s network&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;flannel-io&#x2F;flannel&#x2F;master&#x2F;Documentation&#x2F;kube-flannel.yml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;load-balancer&quot;&gt;Load balancer&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;metallb&quot;&gt;Metallb&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;metallb&#x2F;metallb&#x2F;v0.13.7&#x2F;config&#x2F;manifests&#x2F;metallb-native.yaml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Config files:&lt;&#x2F;p&gt;
+&lt;p&gt;IpAddressPool.yml:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yml&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-yml &quot;&gt;&lt;code class=&quot;language-yml&quot; data-lang=&quot;yml&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;apiVersion&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;kind&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;IPAddressPool
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;metadata&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;ip-pool
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;namespace&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb-system
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;spec&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;addresses&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  - &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;192.168.123.50-192.168.123.90
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;L2Advertisement.yml:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yml&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-yml &quot;&gt;&lt;code class=&quot;language-yml&quot; data-lang=&quot;yml&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;apiVersion&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;kind&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;L2Advertisement
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;metadata&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;l2-advertisement
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;namespace&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metallb-system
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Apply config&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f IpAddressPool.yml
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f L2Advertisement.yml
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;ingress&quot;&gt;Ingress&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;kong&quot;&gt;Kong&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;helm repo add kong https:&#x2F;&#x2F;charts.konghq.com
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;helm repo update
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;helm install --create-namespace --namespace kong kong kong&#x2F;kong
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;k8s-gateway-api&quot;&gt;k8s gateway api&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;kong-1&quot;&gt;Kong&lt;&#x2F;h3&gt;
+&lt;p&gt;install gateway api crds&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl kustomize &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;https:&#x2F;&#x2F;github.com&#x2F;kubernetes-sigs&#x2F;gateway-api&#x2F;config&#x2F;crd?ref=v0.5.1&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;install ingress controller with helm&lt;&#x2F;p&gt;
+&lt;p&gt;values.yaml&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;yaml&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-yaml &quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#8ec07c;&quot;&gt;ingressController.env.feature_gates&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;GatewayAlpha=true
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;add gateway class add gateway&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;apiVersion: gateway.networking.k8s.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;kind: GatewayClass
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metadata:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  name: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  annotations:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    konghq.com&#x2F;gatewayclass-unmanaged: &amp;#39;true&amp;#39;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;spec:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  controllerName: konghq.com&#x2F;kic-gateway-controller
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;apiVersion: gateway.networking.k8s.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;kind: Gateway
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metadata:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  name: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;spec:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  gatewayClassName: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  listeners:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - name: proxy
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    port: 80
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    hostname: kong.example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    protocol: HTTP
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - name: proxy-ssl
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    port: 443
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    hostname: kong.example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    protocol: HTTPS
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;example http route&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;apiVersion: gateway.networking.k8s.io&#x2F;v1beta1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;kind: HTTPRoute
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;metadata:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  name: echo
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  annotations:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    konghq.com&#x2F;strip-path: &amp;#39;true&amp;#39;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;spec:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  parentRefs:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - group: gateway.networking.k8s.io
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    kind: Gateway
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    name: kong
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  hostnames:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - kong.example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  rules:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  - backendRefs:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    - group: &amp;quot;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      kind: Service
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      name: echo
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      port: 80
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;      weight: 1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    matches:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;    - path:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;        type: PathPrefix
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;        value: &#x2F;echo
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;kubectl apply -f -
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;cert-manager&quot;&gt;cert-manager&lt;&#x2F;h2&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>Awsome apps</title>
+		<published>2022-09-15T07:00:41+00:00</published>
+		<updated>2022-09-15T07:00:41+00:00</updated>
+		<link rel="alternate" href="/awsome-apps/" type="text/html"/>
+		<id>/awsome-apps/</id>
+		<content type="html">&lt;h2 id=&quot;windows-linux&quot;&gt;windows &amp;amp; linux&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;termial-emulators&quot;&gt;Termial emulators&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;alacritty&#x2F;alacritty&quot;&gt;alacritty&lt;&#x2F;a&gt; A cross-platform, GPU-accelerated terminal emulator&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;gui-applications&quot;&gt;GUI Applications&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.foxitsoftware.com&#x2F;products&#x2F;pdf-reader&#x2F;&quot;&gt;foxit-pdf-reader&lt;&#x2F;a&gt; A fast, secure and complete PDF viewer&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;freecadweb.org&#x2F;&quot;&gt;freecad&lt;&#x2F;a&gt; Feature based parametric 3D CAD modeler&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;goldendict&#x2F;goldendict&quot;&gt;goldendict&lt;&#x2F;a&gt; Feature-rich dictionary lookup program supporting multiple dictionary formats&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.google.com&#x2F;chrome&quot;&gt;googlechrome&lt;&#x2F;a&gt; The popular and trusted web browser by Google
+&lt;ul&gt;
+&lt;li&gt;[Addons]
+&lt;ul&gt;
+&lt;li&gt;[Bitwarden]&lt;&#x2F;li&gt;
+&lt;li&gt;[Chrono下载管理器]&lt;&#x2F;li&gt;
+&lt;li&gt;[ChroPath]&lt;&#x2F;li&gt;
+&lt;li&gt;[EditThisCookie]&lt;&#x2F;li&gt;
+&lt;li&gt;[Enhanced GitHub]&lt;&#x2F;li&gt;
+&lt;li&gt;[MONKNOW]&lt;&#x2F;li&gt;
+&lt;li&gt;[Octotree]&lt;&#x2F;li&gt;
+&lt;li&gt;[Proxy SwitchyOmega]&lt;&#x2F;li&gt;
+&lt;li&gt;[SponsorBlock for YouTube]&lt;&#x2F;li&gt;
+&lt;li&gt;[Tampermonkey BETA]
+&lt;ul&gt;
+&lt;li&gt;[DouyuEx-斗鱼直播间增强插件]&lt;&#x2F;li&gt;
+&lt;li&gt;[网盘智能识别助手]&lt;&#x2F;li&gt;
+&lt;li&gt;[网盘直链下载助手]&lt;&#x2F;li&gt;
+&lt;li&gt;[屏蔽html5播放器p2p上传]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;[uBlock Origin]&lt;&#x2F;li&gt;
+&lt;li&gt;[FireShot]&lt;&#x2F;li&gt;
+&lt;li&gt;[沙拉查词]&lt;&#x2F;li&gt;
+&lt;li&gt;[身份验证器]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;[kicad]&lt;&#x2F;li&gt;
+&lt;li&gt;[lx-music-desktop]&lt;&#x2F;li&gt;
+&lt;li&gt;[mpv]&lt;&#x2F;li&gt;
+&lt;li&gt;[picgo]&lt;&#x2F;li&gt;
+&lt;li&gt;[postman]&lt;&#x2F;li&gt;
+&lt;li&gt;[qbittorrent-enhanced]&lt;&#x2F;li&gt;
+&lt;li&gt;[rclone-browser]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;command-line-tools&quot;&gt;Command line tools&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;[7zip]&lt;&#x2F;li&gt;
+&lt;li&gt;[aliyundrive-webdav]&lt;&#x2F;li&gt;
+&lt;li&gt;[aria2]&lt;&#x2F;li&gt;
+&lt;li&gt;[bat]&lt;&#x2F;li&gt;
+&lt;li&gt;[caddy]&lt;&#x2F;li&gt;
+&lt;li&gt;[calibre]&lt;&#x2F;li&gt;
+&lt;li&gt;[clash]&lt;&#x2F;li&gt;
+&lt;li&gt;[cmake]&lt;&#x2F;li&gt;
+&lt;li&gt;[conan]&lt;&#x2F;li&gt;
+&lt;li&gt;[ffmpeg]&lt;&#x2F;li&gt;
+&lt;li&gt;[gh]&lt;&#x2F;li&gt;
+&lt;li&gt;[git]&lt;&#x2F;li&gt;
+&lt;li&gt;[gnupg]&lt;&#x2F;li&gt;
+&lt;li&gt;[gradle]&lt;&#x2F;li&gt;
+&lt;li&gt;[htmlq]&lt;&#x2F;li&gt;
+&lt;li&gt;[imagemagick]&lt;&#x2F;li&gt;
+&lt;li&gt;[jq]&lt;&#x2F;li&gt;
+&lt;li&gt;[meson]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;dylanaraps&#x2F;neofetch&quot;&gt;neofetch&lt;&#x2F;a&gt; A CLI system information tool written in BASH that supports displaying images.&lt;&#x2F;li&gt;
+&lt;li&gt;[neovim]&lt;&#x2F;li&gt;
+&lt;li&gt;[nginx]&lt;&#x2F;li&gt;
+&lt;li&gt;[ninja]&lt;&#x2F;li&gt;
+&lt;li&gt;[nssm]&lt;&#x2F;li&gt;
+&lt;li&gt;[ntop]&lt;&#x2F;li&gt;
+&lt;li&gt;[nvm]&lt;&#x2F;li&gt;
+&lt;li&gt;[rclone]&lt;&#x2F;li&gt;
+&lt;li&gt;[starship]&lt;&#x2F;li&gt;
+&lt;li&gt;[stream-url]&lt;&#x2F;li&gt;
+&lt;li&gt;[sudo]&lt;&#x2F;li&gt;
+&lt;li&gt;[telegram]&lt;&#x2F;li&gt;
+&lt;li&gt;[termius]&lt;&#x2F;li&gt;
+&lt;li&gt;[transfer]&lt;&#x2F;li&gt;
+&lt;li&gt;[v2ray]&lt;&#x2F;li&gt;
+&lt;li&gt;[ventoy]&lt;&#x2F;li&gt;
+&lt;li&gt;[xh]&lt;&#x2F;li&gt;
+&lt;li&gt;[yt-dlp]&lt;&#x2F;li&gt;
+&lt;li&gt;[zola]&lt;&#x2F;li&gt;
+&lt;li&gt;[zoxide]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;editors&quot;&gt;Editors&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;[neovim]&lt;&#x2F;li&gt;
+&lt;li&gt;[vim]&lt;&#x2F;li&gt;
+&lt;li&gt;[vscode]&lt;&#x2F;li&gt;
+&lt;li&gt;[sublime-text]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;linux-only&quot;&gt;linux only&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.fail2ban.org&#x2F;&quot;&gt;fall2ban&lt;&#x2F;a&gt; Bans IPs after too many failed authentication attempts&lt;&#x2F;li&gt;
+&lt;li&gt;[htop]&lt;&#x2F;li&gt;
+&lt;li&gt;[iftop]&lt;&#x2F;li&gt;
+&lt;li&gt;[nload]&lt;&#x2F;li&gt;
+&lt;li&gt;[sway]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;windows-only&quot;&gt;windows only&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[aida64extreme]&lt;&#x2F;li&gt;
+&lt;li&gt;[autohotkey2]&lt;&#x2F;li&gt;
+&lt;li&gt;[ccleaner]&lt;&#x2F;li&gt;
+&lt;li&gt;[cpu-z]&lt;&#x2F;li&gt;
+&lt;li&gt;[diskgenius-zh]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bmatzelle&#x2F;gow&quot;&gt;gow&lt;&#x2F;a&gt; Unix command line utilities installer for Windows.&lt;&#x2F;li&gt;
+&lt;li&gt;[HearthStoneDeckTracker]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;nssm.cc&#x2F;&quot;&gt;nssm&lt;&#x2F;a&gt; NSSM - the Non-Sucking Service Manager&lt;&#x2F;li&gt;
+&lt;li&gt;[potplayer]&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ScoopInstaller&#x2F;Scoop&quot;&gt;scoop&lt;&#x2F;a&gt; A command-line installer for Windows.&lt;&#x2F;li&gt;
+&lt;li&gt;[snipaste-beta]&lt;&#x2F;li&gt;
+&lt;li&gt;[Windows-Termial]&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;ipad&quot;&gt;ipad&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;android&quot;&gt;android&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;chrome&quot;&gt;chrome&lt;&#x2F;h2&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>A simple test for zola even theme</title>
+		<published>2022-09-11T00:00:00+00:00</published>
+		<updated>2022-09-11T00:00:00+00:00</updated>
+		<link rel="alternate" href="/first-post/" type="text/html"/>
+		<id>/first-post/</id>
+		<content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;This is my first post, which is a post to test zola.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;markdown-code-block&quot;&gt;Markdown code block&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8ec07c;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;println!&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;Hello world&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;math&quot;&gt;Math&lt;&#x2F;h2&gt;
+&lt;p&gt;Inline math: \(e = mc^2\)&lt;&#x2F;p&gt;
+&lt;p&gt;Display math:
+$$e = mc^2$$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;images&quot;&gt;Images&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;11&#x2F;OKFpYnbjqaxUMBJ.png&quot; alt=&quot;test image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;table&quot;&gt;Table&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;a&lt;&#x2F;th&gt;&lt;th&gt;table&lt;&#x2F;th&gt;&lt;th&gt;in&lt;&#x2F;th&gt;&lt;th&gt;markdown&lt;&#x2F;th&gt;&lt;th&gt;!!&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;we&lt;&#x2F;td&gt;&lt;td&gt;ew&lt;&#x2F;td&gt;&lt;td&gt;we&lt;&#x2F;td&gt;&lt;td&gt;with a longish column inside it&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;list&quot;&gt;List&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;First
+&lt;ul&gt;
+&lt;li&gt;A&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Second
+&lt;ul&gt;
+&lt;li&gt;B&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;numbered-list&quot;&gt;Numbered List&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;First
+&lt;ol&gt;
+&lt;li&gt;A&lt;&#x2F;li&gt;
+&lt;li&gt;B&lt;&#x2F;li&gt;
+&lt;li&gt;C&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Second&lt;&#x2F;li&gt;
+&lt;li&gt;Third&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;iframe&quot;&gt;Iframe&lt;&#x2F;h2&gt;
+&lt;div &gt;
+    &lt;iframe src=&quot;https:&#x2F;&#x2F;www.youtube-nocookie.com&#x2F;embed&#x2F;dQw4w9WgXcQ&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;&#x2F;iframe&gt;
+&lt;&#x2F;div&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>在matplotlib中使用latex渲染</title>
+		<published>2019-09-12T11:35:20+00:00</published>
+		<updated>2019-09-12T11:35:20+00:00</updated>
+		<link rel="alternate" href="/using-latex-in-matplotlib/" type="text/html"/>
+		<id>/using-latex-in-matplotlib/</id>
+		<content type="html">&lt;h2 id=&quot;dai-ma&quot;&gt;代码&lt;&#x2F;h2&gt;
+&lt;p&gt;在代码中加入如下的代码就可以在matplotlib中使用latex渲染文字&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;matplotlib
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;matplotlib.use(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pgf&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;pgf_with_custom_preamble &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;# &amp;quot;font.size&amp;quot;: 40,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pgf.rcfonts&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;False&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;text.usetex&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;True&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pgf.preamble&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: [
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;# math setup:
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;\usepackage{unicode-math}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;\usepackage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;[utf8]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;{inputenc}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;\usepackage{xeCJK}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etmainfont{Times New Roman} % Set main font for ASCII&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etsansfont{Times New Roman}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etmonofont{Times New Roman}&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etCJKmainfont{SimSun}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etCJKsansfont{SimSun}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etCJKmonofont{SimSun}&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    ],
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pdf.fonttype&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;42&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;matplotlib.rcParams.update(pgf_with_custom_preamble)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;完整的代码如下：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;matplotlib
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;matplotlib.use(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pgf&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;pgf_with_custom_preamble &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;# &amp;quot;font.size&amp;quot;: 40,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pgf.rcfonts&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;False&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;text.usetex&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;True&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pgf.preamble&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: [
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;# math setup:
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;\usepackage{unicode-math}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;\usepackage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;[utf8]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;{inputenc}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;\usepackage{xeCJK}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etmainfont{Times New Roman} % Set main font for ASCII&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etsansfont{Times New Roman}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etmonofont{Times New Roman}&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etCJKmainfont{SimSun}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etCJKsansfont{SimSun}&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;\s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;etCJKmonofont{SimSun}&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    ],
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;pdf.fonttype&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;42&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;matplotlib.rcParams.update(pgf_with_custom_preamble)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;matplotlib.pyplot &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;plt
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;pandas &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;pd
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;seaborn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;sns
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sns.set()
+&lt;&#x2F;span&gt;&lt;span&gt;df &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;pd.read_hdf(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;label.h5&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 性别分布
+&lt;&#x2F;span&gt;&lt;span&gt;gender &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;df[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;gender&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;gender &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;gender.fillna(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;unkonwn&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;counts &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;pd.value_counts(gender)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.figure(figsize&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;10&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;))
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;counts.plot.pie(legend&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;True&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;, autopct&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;lambda &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;p: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;{:.2f}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;%(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;{:.0f}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;)&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;.format(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    p, (p&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;counts.sum()), title&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;Gender distribution&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.savefig(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;figures&#x2F;gender.png&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.savefig(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;figures&#x2F;gender&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 年龄分布
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;age &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;df[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;age&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.clf()
+&lt;&#x2F;span&gt;&lt;span&gt;age &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;age.dropna()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sns.distplot(age)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.title(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;kde plot&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.savefig(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;figures&#x2F;age.png&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.savefig(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;figures&#x2F;age&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 诊断分布
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;tmp &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;df.iloc[:, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;:]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.clf()
+&lt;&#x2F;span&gt;&lt;span&gt;counts &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;tmp.sum() &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;&#x2F; &lt;&#x2F;span&gt;&lt;span&gt;tmp.shape[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d3869b;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;counts.plot(kind&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;bar&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;, title&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;Percentage&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.tight_layout()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.savefig(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;figures&#x2F;diagnose.png&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;plt.savefig(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;.&#x2F;figures&#x2F;diagnose&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;结果如图：&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;using-latex-in-matplotlib&#x2F;gender.svg&quot; alt=&quot;gender&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;using-latex-in-matplotlib&#x2F;age.svg&quot; alt=&quot;age&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;using-latex-in-matplotlib&#x2F;diagnose.svg&quot; alt=&quot;dianose&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>使用docker搭建深度学习环境</title>
+		<published>2018-06-10T10:18:22+00:00</published>
+		<updated>2018-06-10T10:18:22+00:00</updated>
+		<link rel="alternate" href="/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/" type="text/html"/>
+		<id>/shi-yong-dockerda-jian-shen-du-xue-xi-huan-jing/</id>
+		<content type="html">&lt;h2 id=&quot;docker&quot;&gt;Docker&lt;&#x2F;h2&gt;
+&lt;p&gt;Docker是一种虚拟化容器，可能把运行环境与操作系统隔离起来，使开发环境与操作系统分离，方便多个开发环境的管理。与虚拟机相比，它更加轻量，方便。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;xi-tong-huan-jing&quot;&gt;系统环境&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ubuntu 16.04 LTS&lt;&#x2F;li&gt;
+&lt;li&gt;Nvidia GTX Titan Xp(其它Nvidia的显卡应该也可以)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;an-zhuang-nvidiaqu-dong-yi-jing-an-zhuang-guo-de-ke-yi-tiao-guo&quot;&gt;安装Nvidia驱动（已经安装过的可以跳过）&lt;&#x2F;h2&gt;
+&lt;p&gt;可以参照这篇&lt;a href=&quot;https:&#x2F;&#x2F;websiteforstudents.com&#x2F;install-proprietary-nvidia-gpu-drivers-on-ubuntu-16-04-17-10-18-04&#x2F;&quot;&gt;文章&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo add-apt-repository ppa:graphics-drivers&#x2F;ppa
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt update
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt install nvidia-387
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;an-zhuang-docker-cehe-nvidia-docker&quot;&gt;安装Docker-ce和Nvidia-Docker&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;an-zhuang-docker-ce&quot;&gt;安装Docker-ce&lt;&#x2F;h3&gt;
+&lt;p&gt;docker-ce的安装可以参照这里的&lt;a href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;ubuntu&#x2F;#uninstall-old-versions&quot;&gt;官方文档&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 卸载Ubuntu官方源中的docker.io（如果之前安装了的话）
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get remove docker docker-engine docker.io
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 更新apt package index.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get update
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 安装一些要用到了一些包
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get install \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    apt-transport-https \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    ca-certificates \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    curl \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;    software-properties-common
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 添加docker官方的GPG KEY
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ curl -fsSL https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;ubuntu&#x2F;gpg &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt-key add -
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 添加docker官方的源
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo add-apt-repository \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;   &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;deb [arch=amd64] https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;ubuntu \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;   $(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;lsb_release -cs&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;) \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;   stable&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 更新apt package index.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get update
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 安装docker-ce
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get install docker-ce
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;an-zhuang-nvidia-docker&quot;&gt;安装Nvidia-docker&lt;&#x2F;h3&gt;
+&lt;p&gt;在docker-ce中并不能使用GPU,要安装nvidia-docker才可以，nvidia-docker的安装可以参照其&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nvidia&#x2F;nvidia-docker&#x2F;wiki&#x2F;Installation-(version-2.0)&quot;&gt;官方文档&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 配置软件源
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;gpgkey &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span&gt;\
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt-key add -
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ distribution=$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; &#x2F;etc&#x2F;os-release&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;echo &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ID$VERSION_ID)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ curl -s -L https:&#x2F;&#x2F;nvidia.github.io&#x2F;nvidia-docker&#x2F;$distribution&#x2F;nvidia-docker.list &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span&gt;\
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;nvidia-docker.list
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo apt-get update
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 安装Nvidia-docker
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ sudo apt-get install nvidia-docker2
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;pei-zhi-docker&quot;&gt;配置Docker&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 启动Docker服务
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo service docker start
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 将当前用户加入docker group
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sudo gpasswd -a $USER docker
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;you-hua-dockerhublian-jie-ke-xuan&quot;&gt;优化Dockerhub连接(可选)&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;hub.docker.com&#x2F;&quot;&gt;Dockerhub&lt;&#x2F;a&gt;是一个托管docker镜像的地方，就像&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;&quot;&gt;Github&lt;&#x2F;a&gt;是一个托管代码的地方一样。上面有大量别人已经配置好的docker环境可以直接使用，十分方便。但是在国内访问十分缓慢。&lt;&#x2F;p&gt;
+&lt;p&gt;可以参照这个&lt;a href=&quot;https:&#x2F;&#x2F;blog.csdn.net&#x2F;evandeng2009&#x2F;article&#x2F;details&#x2F;53893789&quot;&gt;博客&lt;&#x2F;a&gt;使用阿里云容器hub对Dockerhub进行加速，阿里云容器hub的加速是免费的，实测在学校能达到大概1M&#x2F;s，而直接连接Dockerhub的速度则惨不忍睹。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;T8F5iIbmlevS3zH.png&quot; alt=&quot;阿里云容器hub&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;复制上面的专属加速地层地址后编辑&lt;code&gt;&#x2F;etc&#x2F;docker&#x2F;&#x2F;etc&#x2F;docker&#x2F;daemon.json&lt;&#x2F;code&gt;
+在后面加入如下一行(注意json的格式，要写在&lt;code&gt;{}&lt;&#x2F;code&gt;里面，上一行结尾要有&lt;code&gt;,&lt;&#x2F;code&gt;)：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;registry-mirrosrs&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;:[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;刚才复制的地址&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;zAybL5qoOTdHpGM.png&quot; alt=&quot;修改daemon.json&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;至此Docker和Nvidia环境安装配置完成&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;shi-yong-docker&quot;&gt;使用docker&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;jian-dan-shi-yong&quot;&gt;简单使用&lt;&#x2F;h3&gt;
+&lt;p&gt;一些常用的镜像可以直接在dockerhub上搜索，然后通过dcoker运行。比如下面的这个&lt;a href=&quot;https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;tensorflow&#x2F;tensorflow&#x2F;&quot;&gt;Tensorflow&lt;&#x2F;a&gt;, 通过下面的这个命令即可开箱及用。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run -it -p 8888:8888 tensorflow&#x2F;tensorflow:latest-gpu
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;shi-yong-nvidiati-gong-de-cuda-cudnnhuan-jing-jing-xiang&quot;&gt;使用Nvidia提供的cuda&amp;amp;cudnn环境镜像&lt;&#x2F;h3&gt;
+&lt;p&gt;如果在电脑上安装多个版本的&lt;code&gt;cuda&lt;&#x2F;code&gt;、&lt;code&gt;cudnn&lt;&#x2F;code&gt;等库并且管理其版本是一件很麻烦的事情。有了docker之后可以使用Nvidia官方提供的docker镜像，在这些镜像中cuda和cudnn都是已经安装配置好了的。如果dockerhub上面没有我们想要的一些环境的话，可以在这个环境的基础上继续构建我们的环境。&lt;&#x2F;p&gt;
+&lt;p&gt;以&lt;code&gt;8.0-cudnn5-devel-ubuntu16.04&lt;&#x2F;code&gt;为例：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run --name test -it nvidia&#x2F;cuda:8.0-cudnn5-devel-ubuntu16.04 bash
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;如下图片所示可以进入对应的环境，然后可以像正常使用Linux一样继续构建环境。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;YqjedI5EOHlUK8L.png&quot; alt=&quot;8.0-cudnn5-devel-ubuntu16.04&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;要退出环境的话，输入&lt;code&gt;exit&lt;&#x2F;code&gt;或者使用快捷键&lt;code&gt;ctrl=d&lt;&#x2F;code&gt;就可以了。&lt;&#x2F;p&gt;
+&lt;p&gt;配置好环境退出后后使用可以使用&lt;code&gt;docker commit&lt;&#x2F;code&gt;将&lt;code&gt;container&lt;&#x2F;code&gt;保存成&lt;code&gt;image&lt;&#x2F;code&gt;从而使环境持久化，方便生成同样的环境。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ docker commit test test:test
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sha256:e9338a3b4aede076ab566c44b1127f5c1b18fd3dcb7cb3e02e19856f21db0c5b
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;可以通过下面的命令新建一个同样的环境&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run -it --name test01 test:test bash
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;如果只是想运行刚才的&lt;code&gt;container&lt;&#x2F;code&gt;的话，可以用&lt;code&gt;docker container start&lt;&#x2F;code&gt;命令。&lt;&#x2F;p&gt;
+&lt;p&gt;更加详细的使用方法可以参照Docker的&lt;a href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;&quot;&gt;官方文档&lt;&#x2F;a&gt;和一些中文教程。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;shi-yong-dockerfile&quot;&gt;使用Dockerfile&lt;&#x2F;h3&gt;
+&lt;p&gt;Dockerfile可以用来自动化构建Docker Image.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;gou-jian-caffe-sal&quot;&gt;构建caffe-sal&lt;&#x2F;h4&gt;
+&lt;p&gt;参考caffe官方的&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;BVLC&#x2F;caffe&#x2F;tree&#x2F;master&#x2F;docker&quot;&gt;Dockerfile&lt;&#x2F;a&gt;编写自己的Docerfile&lt;&#x2F;p&gt;
+&lt;p&gt;目录结构&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;8SvG21YhMFlLdVs.png&quot; alt=&quot;目结构&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Dockerfile的内容&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Dockerfile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Dockerfile &quot;&gt;&lt;code class=&quot;language-Dockerfile&quot; data-lang=&quot;Dockerfile&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; nvidia&#x2F;cuda
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;RUN &lt;&#x2F;span&gt;&lt;span&gt;apt-get update &amp;amp;&amp;amp; apt-get install -y --no-install-recommends \
+&lt;&#x2F;span&gt;&lt;span&gt; cpio \
+&lt;&#x2F;span&gt;&lt;span&gt;        build-essential \
+&lt;&#x2F;span&gt;&lt;span&gt;        git \
+&lt;&#x2F;span&gt;&lt;span&gt;        wget \
+&lt;&#x2F;span&gt;&lt;span&gt;        numactl \
+&lt;&#x2F;span&gt;&lt;span&gt;        vim \
+&lt;&#x2F;span&gt;&lt;span&gt;        libopenblas-dev\
+&lt;&#x2F;span&gt;&lt;span&gt;        screen \
+&lt;&#x2F;span&gt;&lt;span&gt;        libmlx4-1 libmlx5-1 ibutils  rdmacm-utils libibverbs1 ibverbs-utils perftest infiniband-diags \
+&lt;&#x2F;span&gt;&lt;span&gt;        openmpi-bin libopenmpi-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libboost-all-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libgflags-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libgoogle-glog-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libhdf5-serial-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libleveldb-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        liblmdb-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libopencv-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libprotobuf-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        libsnappy-dev \
+&lt;&#x2F;span&gt;&lt;span&gt;        protobuf-compiler
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;ENV &lt;&#x2F;span&gt;&lt;span&gt;CAFFE_ROOT=&#x2F;opt&#x2F;caffe
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;WORKDIR &lt;&#x2F;span&gt;&lt;span&gt;$CAFFE_ROOT
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;ADD &lt;&#x2F;span&gt;&lt;span&gt;caffe-sal caffe-sal
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;WORKDIR &lt;&#x2F;span&gt;&lt;span&gt;$CAFFE_ROOT&#x2F;caffe-sal
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;ADD &lt;&#x2F;span&gt;&lt;span&gt;Makefile.config Makefile.config
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;RUN &lt;&#x2F;span&gt;&lt;span&gt;make -j40
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Makefile.config的内容&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;### Refer to http:&#x2F;&#x2F;caffe.berkeleyvision.org&#x2F;installation.html
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Contributions simplifying and improving our build system are welcome!
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## cuDNN acceleration switch (uncomment to build with cuDNN).
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## USE_CUDNN := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CPU-only switch (uncomment to build without GPU support).
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CPU_ONLY := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## To customize your choice of compiler, uncomment and set the following.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## N.B. the default for Linux is g++ and the default for OSX is clang++
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUSTOM_CXX := g++
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUDA directory contains bin&#x2F; and lib&#x2F; directories that we need.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;CUDA_DIR &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;usr&#x2F;local&#x2F;cuda
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## On Ubuntu 14.04, if cuda tools are installed via
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## &amp;quot;sudo apt-get install nvidia-cuda-toolkit&amp;quot; then use this instead:
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUDA_DIR := &#x2F;usr
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## CUDA architecture setting: going with all of them.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## For CUDA &amp;lt; 6.0, comment the *_50 lines for compatibility.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;CUDA_ARCH &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;-gencode arch=compute_30,code=sm_30 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  -gencode arch=compute_35,code=sm_35 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  -gencode arch=compute_50,code=sm_50 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  -gencode arch=compute_50,code=compute_50
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS choice:
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## atlas for ATLAS (default)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## mkl for MKL
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## open for OpenBlas
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;BLAS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;open
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Custom (MKL&#x2F;ATLAS&#x2F;OpenBLAS) include and lib directories.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Leave commented to accept the defaults for your choice of BLAS
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## (which should work)!
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_INCLUDE := &#x2F;path&#x2F;to&#x2F;your&#x2F;blas
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_LIB := &#x2F;path&#x2F;to&#x2F;your&#x2F;blas
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Homebrew puts openblas in a directory that is not on the standard search path
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_INCLUDE := $(shell brew --prefix openblas)&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## BLAS_LIB := $(shell brew --prefix openblas)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## This is required only if you will compile the matlab interface.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## MATLAB directory should contain the mex binary in &#x2F;bin.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## MATLAB_DIR := &#x2F;usr&#x2F;local
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## MATLAB_DIR := &#x2F;Applications&#x2F;MATLAB_R2012b.app
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## NOTE: this is required only if you will compile the python interface.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## We need to be able to find Python.h and numpy&#x2F;arrayobject.h.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;usr&#x2F;include&#x2F;python2.7 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;  &#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;dist-packages&#x2F;numpy&#x2F;core&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Anaconda Python distribution is quite popular. Include path:
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Verify anaconda location, sometimes it&amp;#39;s in root.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## ANACONDA_HOME := $(HOME)&#x2F;anaconda
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_INCLUDE := $(ANACONDA_HOME)&#x2F;include \
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;  # $(ANACONDA_HOME)&#x2F;include&#x2F;python2.7 \
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;  # $(ANACONDA_HOME)&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;numpy&#x2F;core&#x2F;include \
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## We need to be able to find libpythonX.X.so or .dylib.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;usr&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_LIB := $(ANACONDA_HOME)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Homebrew installs numpy in a non standard path (keg only)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_INCLUDE += $(dir $(shell python -c &amp;#39;import numpy.core; print(numpy.core.__file__)&amp;#39;))&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## PYTHON_LIB += $(shell brew --prefix numpy)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Uncomment to support layers written in Python (will link against Python libs)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## WITH_PYTHON_LAYER := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Whatever else you find you need goes here.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;INCLUDE_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;include &#x2F;usr&#x2F;local&#x2F;include &#x2F;usr&#x2F;include&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LIBRARY_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;lib &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib &#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## INCLUDE_DIRS += $(shell brew --prefix)&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## LIBRARY_DIRS += $(shell brew --prefix)&#x2F;lib
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Uncomment to use `pkg-config` to specify OpenCV library paths.
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## USE_PKG_CONFIG := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;BUILD_DIR &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;build
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;DISTRIBUTE_DIR &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;distribute
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## Uncomment for debugging. Does not work on OSX due to https:&#x2F;&#x2F;github.com&#x2F;BVLC&#x2F;caffe&#x2F;issues&#x2F;171
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## DEBUG := 1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## The ID of the GPU that &amp;#39;make runtest&amp;#39; will use to run unit tests.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;TEST_GPUID &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;0
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## enable pretty build (comment to see full commands)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;Q &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;?= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;@
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;font-style:italic;color:#928374;&quot;&gt;## 运行构建命令
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ docker build --rm -t caffe-sal:latest .
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;构建结果：&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;9pyLmWl6eDs4U87.png&quot; alt=&quot;构建结果&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;运行构建好的&lt;code&gt;Image&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;nvidia-docker run it caffe-sal:latest bash
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;运行结果&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;Fb2TBnStfR9lUcq.png&quot; alt=&quot;运行结果&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>编译caffe时使用本地的protobuf</title>
+		<published>2018-06-08T14:37:46+00:00</published>
+		<updated>2018-06-08T14:37:46+00:00</updated>
+		<link rel="alternate" href="/use-local-protobuf-when-compiling-caffe/" type="text/html"/>
+		<id>/use-local-protobuf-when-compiling-caffe/</id>
+		<content type="html">&lt;h2 id=&quot;xia-zai-bing-bian-yi-protobuf&quot;&gt;下载并编译protobuf&lt;&#x2F;h2&gt;
+&lt;p&gt;Protobuf的项目主页可以在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&quot;&gt;github&lt;&#x2F;a&gt;上找到。在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&#x2F;releases&quot;&gt;Release页面&lt;&#x2F;a&gt;可以下载对应的代码。下载&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&#x2F;releases&#x2F;download&#x2F;v3.5.1&#x2F;protobuf-cpp-3.5.1.tar.gz&quot;&gt;protobuf-cpp-3.5.1.tar.gz&lt;&#x2F;a&gt;，别的版本应该也可以。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;wget https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;protobuf&#x2F;releases&#x2F;download&#x2F;v3.5.1&#x2F;protobuf-cpp-3.5.1.tar.gz
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;tar -xvf protobuf-cpp-3.5.1.tar.gz
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; protobuf-3.5.1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;.&#x2F;configure --prefix&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;quot;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;make -j20
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;make install
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;bian-yi-caffe&quot;&gt;编译caffe&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;unrar x caffe-sal.rar
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; caffe-sal
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;cp Makefile.config.example Makefile.config
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;编辑&lt;code&gt;Makefile.config&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;修改&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;INCLUDE_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt; &#x2F;usr&#x2F;local&#x2F;include
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LIBRARY_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt; &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;为&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;Makefile&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-Makefile &quot;&gt;&lt;code class=&quot;language-Makefile&quot; data-lang=&quot;Makefile&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;INCLUDE_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_INCLUDE&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;include &#x2F;usr&#x2F;local&#x2F;include &#x2F;usr&#x2F;include&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LIBRARY_DIRS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;PYTHON_LIB&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;) ${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&#x2F;.local&#x2F;lib &#x2F;usr&#x2F;local&#x2F;lib &#x2F;usr&#x2F;lib &#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;hdf5&#x2F;serial&#x2F;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;设置&lt;code&gt;PATH&lt;&#x2F;code&gt;环境变量，因为要使用刚才编译好的&lt;code&gt;protoc&lt;&#x2F;code&gt;,然后进行编译,j后面的数字是要使用的线程数，一般为cpu的线程数+1,只影响编译的速度&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ export PATH=${HOME}&#x2F;.local&#x2F;bin:$PATH
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ which protoc
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;&#x2F;home&#x2F;ncepu&#x2F;.local&#x2F;bin&#x2F;protoc
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;$ make -j41
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;每次运行程序前设置环境变量&lt;code&gt;LD_LIBRARY_PATH&lt;&#x2F;code&gt;,或者把它加到.bashrc里面去。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fa5c4b;&quot;&gt;export &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LD_LIBRARY_PATH&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;${&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;}&#x2F;.local&#x2F;lib:$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;LD_LIBRARY_PATH
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;cha-kan-lian-jie-ku-de-ban-ben&quot;&gt;查看链接库的版本&lt;&#x2F;h2&gt;
+&lt;p&gt;用下面的命令查看caffe链接的库的版本，可以看到是刚才编译好的版本。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;ldd build&#x2F;tools&#x2F;caffe &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;grep protobuf
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;libprotobuf.so.15 =&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fe8019;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; &#x2F;home&#x2F;ncepu&#x2F;.local&#x2F;lib&#x2F;libprotobuf.so.15 (0x00007f7795fc1000&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>Windows下载关联python</title>
+		<published>2018-05-01T18:30:37+00:00</published>
+		<updated>2018-05-01T18:30:37+00:00</updated>
+		<link rel="alternate" href="/associate-python-file-in-windows/" type="text/html"/>
+		<id>/associate-python-file-in-windows/</id>
+		<content type="html">&lt;h2 id=&quot;an-zhuang-anaconda&quot;&gt;安装anaconda&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;xia-zai-anaconda&quot;&gt;下载anaconda&lt;&#x2F;h3&gt;
+&lt;p&gt;可以从&lt;a href=&quot;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;#&quot;&gt;清华大学开源镜像站&lt;&#x2F;a&gt;下载, 比从官方下载要快上很多。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;wget https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;archive&#x2F;Anaconda3-5.1.0-Windows-x86_64.exe
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;运行下载的文件完成安装。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;she-zhi-huan-jing-bian-liang&quot;&gt;设置环境变量&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;右键&lt;code&gt;此电脑&lt;&#x2F;code&gt;，选择&lt;code&gt;属性&lt;&#x2F;code&gt;, &lt;code&gt;高级系统设置&lt;&#x2F;code&gt;, &lt;code&gt;环境变量&lt;&#x2F;code&gt;。&lt;&#x2F;li&gt;
+&lt;li&gt;新建立如下环境变量&lt;code&gt;CONDA_HOME&lt;&#x2F;code&gt;为anaconda的安装目录。&lt;&#x2F;li&gt;
+&lt;li&gt;编辑环境变量&lt;code&gt;path&lt;&#x2F;code&gt;, 加入&lt;code&gt;%CONDA_HOME%\&lt;&#x2F;code&gt;和&lt;code&gt;%CONDA_HOME%\Scripts&lt;&#x2F;code&gt;。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;JXDeZ6pd1gSTHzR.png&quot; alt=&quot;环境变量&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;Qw9hqBC1jdXtkuW.png&quot; alt=&quot;PATH&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;xia-zai-winpython&quot;&gt;下载winpython&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;从github上下载&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;winpython&#x2F;winpython&quot;&gt;Winpython&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;修改winpython&#x2F;associate.py&lt;&#x2F;li&gt;
+&lt;li&gt;注释&lt;code&gt;unregister(sys.prefix)&lt;&#x2F;code&gt;这一行&lt;&#x2F;li&gt;
+&lt;li&gt;运行&lt;code&gt;python -m winpython.associate&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#282828;color:#fdf4c1aa;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;git clone https:&#x2F;&#x2F;github.com&#x2F;winpython&#x2F;winpython.git
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fabd2f;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; winpython
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;sed -i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b8bb26;&quot;&gt;&amp;#39;s&#x2F;unregister(sys.prefix)&#x2F;#register(sys.prefix)&#x2F;g&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt; winpython&#x2F;associate.py
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fdf4c1;&quot;&gt;python -m winpython.associate
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;bx65CPwqydKtnEl.png&quot; alt=&quot;修改associate.py&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;xiu-gai-zhu-ce-biao&quot;&gt;修改注册表&lt;&#x2F;h2&gt;
+&lt;p&gt;打开注册表编辑器，查找&lt;code&gt;python.File&lt;&#x2F;code&gt;，修改&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;计算机\HKEY_CURRENT_USER\Software\Classes\Python.File\shell\Edit with Spyder\command&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;的值：&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;&amp;quot;D:\ProgramData\Miniconda3\pythonw.exe&amp;quot; &amp;quot;D:\ProgramData\Miniconda3\Scripts\spyder&amp;quot; &amp;quot;%1&amp;quot;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;为：&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;&amp;quot;D:\ProgramData\Miniconda3\pythonw.exe&amp;quot; &amp;quot;D:\ProgramData\Miniconda3\Scripts\spyder-script.py&amp;quot; &amp;quot;%1&amp;quot;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;s2.loli.net&#x2F;2022&#x2F;09&#x2F;12&#x2F;A1Pe2E8kJfqsLmN.png&quot; alt=&quot;修改注册表&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+	</entry>
+</feed>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title> - config k8s in archlinux</title>
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+      
+
+      
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/slideout/1.0.1/slideout.min.js"></script>
+          
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/mathtex-script-type.min.js" integrity="sha384-zWYbd0NBwgTsgIdFKVprSfTh1mbMPe5Hz1X3yY4Sd1h/K1cQoUe36OGwAGz/PcDy" crossorigin="anonymous"></script>
+              
+          <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+                  onload="renderMathInElement(document.body);"></script>
+              
+          
+      
+
+      
+          <link rel="stylesheet" href="/site.css">
+          
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+          
+      
+
+      
+      
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="mobile-navbar" class="mobile-navbar">
+              <div class="mobile-header-logo">
+                <a href="/" class="logo">Tkit&#x27;s Blog</a>
+              </div>
+              <div class="mobile-navbar-icon icon-out">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <nav id="mobile-menu" class="mobile-menu slideout-menu slideout-menu-left">
+              <ul class="mobile-menu-list">
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;">
+                            Home
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;categories">
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;tags">
+                            Tags
+                        </a>
+                    </li>
+                
+                    <li class="mobile-menu-item">
+                        <a href="&#x2F;about">
+                            About
+                        </a>
+                    </li>
+                
+              </ul>
+            </nav>
+
+            <header id="header">
+                <div class="logo"><a href="&#x2F;">Tkit&#x27;s Blog</a></div>
+                <nav class="menu">
+                    <ul>
+                        
+                            <li>
+                                <a href="&#x2F;">
+                                    Home
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;categories">
+                                    Categories
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;tags">
+                                    Tags
+                                </a>
+                            </li>
+                        
+                            <li>
+                                <a href="&#x2F;about">
+                                    About
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </nav>
+            </header>
+
+            <main>
+                <div class="content" id="mobile-panel">
+                    
+
+
+<div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#install-packages" class="toc-link">Install packages</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#install-necessary-packages" class="toc-link">Install necessary packages</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#install-extra-useful-packages" class="toc-link">Install extra useful packages</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#generate-containerd-default-configuration" class="toc-link">Generate containerd default configuration</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#optional-config-crictl" class="toc-link">(Optional) config crictl</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#enable-and-start-services" class="toc-link">Enable and start services</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#run-kubeadm" class="toc-link">Run kubeadm</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#pull-images-from-aliyun" class="toc-link">pull images from aliyun</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#kubeadm-init" class="toc-link">kubeadm init</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#untaint-control-plane" class="toc-link">Untaint control plane</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#config-k8s-network" class="toc-link">Config k8s network</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#load-balancer" class="toc-link">Load balancer</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#metallb" class="toc-link">Metallb</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#ingress" class="toc-link">Ingress</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#kong" class="toc-link">Kong</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#k8s-gateway-api" class="toc-link">k8s gateway api</a>
+                    
+                    <ul>
+                        
+                        <li>
+                            <a href="/config-k8s-in-archlinux/#kong-1" class="toc-link">Kong</a>
+                        </li>
+                        
+                    </ul>
+                    
+                </li>
+                
+                <li>
+                    <a href="/config-k8s-in-archlinux/#cert-manager" class="toc-link">cert-manager</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+    <header class="post__header">
+        <h1 class="post__title">
+            <a href="&#x2F;config-k8s-in-archlinux&#x2F;">config k8s in archlinux</a>
+        </h1>
+        <div class="post__meta">
+            <span class="post__time">2023-01-19</span>
+            
+        </div>
+    </header>
+
+    <div class="post-content">
+      <h2 id="install-packages">Install packages</h2>
+<h3 id="install-necessary-packages">Install necessary packages</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">pacman -S --needed kubeadm kubelet kubectl
+</span></code></pre>
+<h3 id="install-extra-useful-packages">Install extra useful packages</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">pacman -S --needed helm kustomize k9s
+</span></code></pre>
+<h2 id="generate-containerd-default-configuration">Generate containerd default configuration</h2>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;"># Generate default configuration
+</span><span style="color:#fdf4c1;">mkdir -p /etc/containerd
+</span><span style="color:#fdf4c1;">containerd config default </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">tee /etc/containerd/config.toml
+</span><span style="color:#fdf4c1;">sed -i </span><span style="color:#b8bb26;">&#39;s/SystemdCgroup = false/SystemdCgroup = true/g&#39; </span><span style="color:#fdf4c1;">\
+</span><span style="color:#fdf4c1;">	/etc/containerd/config.toml
+</span><span style="color:#fdf4c1;">sed -i </span><span style="color:#b8bb26;">&#39;s/k8s.gcr.io/registry.cn-hangzhou.aliyuncs.com\/google_containers/g&#39; </span><span style="color:#fdf4c1;">\
+</span><span style="color:#fdf4c1;">	/etc/containerd/config.toml
+</span></code></pre>
+<h2 id="optional-config-crictl">(Optional) config crictl</h2>
+<pre style="background-color:#282828;color:#fdf4c1aa;"><code><span>crictl config --set  runtime-endpoint=unix:///run/containerd/containerd.sock
+</span></code></pre>
+<h2 id="enable-and-start-services">Enable and start services</h2>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">systemctl enable --now kubelet.service containerd.service
+</span></code></pre>
+<ul>
+<li>better to reboot system beacuse for iptables-nft modules to load</li>
+<li>please disable swap for kubelet to run</li>
+</ul>
+<h2 id="run-kubeadm">Run kubeadm</h2>
+<h3 id="pull-images-from-aliyun">pull images from aliyun</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">kubeadm config images pull \
+</span><span style="color:#fdf4c1;">    --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
+</span></code></pre>
+<h3 id="kubeadm-init">kubeadm init</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">POD_CIDR</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;10.244.0.0/16&quot;
+</span><span style="color:#fdf4c1;">DNS_NAME</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">tkit-vbox
+</span><span style="color:#fdf4c1;">kubeadm init \
+</span><span style="color:#fdf4c1;">    --apiserver-advertise-address 0.0.0.0 \
+</span><span style="color:#fdf4c1;">	--apiserver-cert-extra-sans $DNS_NAME \
+</span><span style="color:#fdf4c1;">    --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers \
+</span><span style="color:#fdf4c1;">    --pod-network-cidr</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">$POD_CIDR
+</span></code></pre>
+<h2 id="untaint-control-plane">Untaint control plane</h2>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">kubectl taint node --all  node-role.kubernetes.io/control-plane:NoSchedule-
+</span></code></pre>
+<h2 id="config-k8s-network">Config k8s network</h2>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+</span></code></pre>
+<h2 id="load-balancer">Load balancer</h2>
+<h3 id="metallb">Metallb</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+</span></code></pre>
+<p>Config files:</p>
+<p>IpAddressPool.yml:</p>
+<pre data-lang="yml" style="background-color:#282828;color:#fdf4c1aa;" class="language-yml "><code class="language-yml" data-lang="yml"><span style="font-weight:bold;color:#8ec07c;">apiVersion</span><span>: </span><span style="color:#b8bb26;">metallb.io/v1beta1
+</span><span style="font-weight:bold;color:#8ec07c;">kind</span><span>: </span><span style="color:#b8bb26;">IPAddressPool
+</span><span style="font-weight:bold;color:#8ec07c;">metadata</span><span>:
+</span><span>  </span><span style="font-weight:bold;color:#8ec07c;">name</span><span>: </span><span style="color:#b8bb26;">ip-pool
+</span><span>  </span><span style="font-weight:bold;color:#8ec07c;">namespace</span><span>: </span><span style="color:#b8bb26;">metallb-system
+</span><span style="font-weight:bold;color:#8ec07c;">spec</span><span>:
+</span><span>  </span><span style="font-weight:bold;color:#8ec07c;">addresses</span><span>:
+</span><span>  - </span><span style="color:#b8bb26;">192.168.123.50-192.168.123.90
+</span></code></pre>
+<p>L2Advertisement.yml:</p>
+<pre data-lang="yml" style="background-color:#282828;color:#fdf4c1aa;" class="language-yml "><code class="language-yml" data-lang="yml"><span style="font-weight:bold;color:#8ec07c;">apiVersion</span><span>: </span><span style="color:#b8bb26;">metallb.io/v1beta1
+</span><span style="font-weight:bold;color:#8ec07c;">kind</span><span>: </span><span style="color:#b8bb26;">L2Advertisement
+</span><span style="font-weight:bold;color:#8ec07c;">metadata</span><span>:
+</span><span>  </span><span style="font-weight:bold;color:#8ec07c;">name</span><span>: </span><span style="color:#b8bb26;">l2-advertisement
+</span><span>  </span><span style="font-weight:bold;color:#8ec07c;">namespace</span><span>: </span><span style="color:#b8bb26;">metallb-system
+</span></code></pre>
+<p><strong>Apply config</strong></p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">kubectl apply -f IpAddressPool.yml
+</span><span style="color:#fdf4c1;">kubectl apply -f L2Advertisement.yml
+</span></code></pre>
+<h2 id="ingress">Ingress</h2>
+<h3 id="kong">Kong</h3>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">helm repo add kong https://charts.konghq.com
+</span><span style="color:#fdf4c1;">helm repo update
+</span><span style="color:#fdf4c1;">helm install --create-namespace --namespace kong kong kong/kong
+</span></code></pre>
+<h2 id="k8s-gateway-api">k8s gateway api</h2>
+<h3 id="kong-1">Kong</h3>
+<p>install gateway api crds</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">kubectl kustomize </span><span style="color:#b8bb26;">&quot;https://github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.5.1&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">kubectl apply -f -
+</span></code></pre>
+<p>install ingress controller with helm</p>
+<p>values.yaml</p>
+<pre data-lang="yaml" style="background-color:#282828;color:#fdf4c1aa;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span style="font-weight:bold;color:#8ec07c;">ingressController.env.feature_gates</span><span>: </span><span style="color:#b8bb26;">GatewayAlpha=true
+</span></code></pre>
+<p>add gateway class add gateway</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fabd2f;">echo </span><span style="color:#b8bb26;">&quot;apiVersion: gateway.networking.k8s.io/v1beta1
+</span><span style="color:#b8bb26;">kind: GatewayClass
+</span><span style="color:#b8bb26;">metadata:
+</span><span style="color:#b8bb26;">  name: kong
+</span><span style="color:#b8bb26;">  annotations:
+</span><span style="color:#b8bb26;">    konghq.com/gatewayclass-unmanaged: &#39;true&#39;
+</span><span style="color:#b8bb26;">spec:
+</span><span style="color:#b8bb26;">  controllerName: konghq.com/kic-gateway-controller
+</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">kubectl apply -f -
+</span><span>
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fabd2f;">echo </span><span style="color:#b8bb26;">&quot;apiVersion: gateway.networking.k8s.io/v1beta1
+</span><span style="color:#b8bb26;">kind: Gateway
+</span><span style="color:#b8bb26;">metadata:
+</span><span style="color:#b8bb26;">  name: kong
+</span><span style="color:#b8bb26;">spec:
+</span><span style="color:#b8bb26;">  gatewayClassName: kong
+</span><span style="color:#b8bb26;">  listeners:
+</span><span style="color:#b8bb26;">  - name: proxy
+</span><span style="color:#b8bb26;">    port: 80
+</span><span style="color:#b8bb26;">    hostname: kong.example
+</span><span style="color:#b8bb26;">    protocol: HTTP
+</span><span style="color:#b8bb26;">  - name: proxy-ssl
+</span><span style="color:#b8bb26;">    port: 443
+</span><span style="color:#b8bb26;">    hostname: kong.example
+</span><span style="color:#b8bb26;">    protocol: HTTPS
+</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">kubectl apply -f -
+</span><span>
+</span></code></pre>
+<p>example http route</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span> </span><span style="color:#fabd2f;">echo </span><span style="color:#b8bb26;">&quot;apiVersion: gateway.networking.k8s.io/v1beta1
+</span><span style="color:#b8bb26;">kind: HTTPRoute
+</span><span style="color:#b8bb26;">metadata:
+</span><span style="color:#b8bb26;">  name: echo
+</span><span style="color:#b8bb26;">  annotations:
+</span><span style="color:#b8bb26;">    konghq.com/strip-path: &#39;true&#39;
+</span><span style="color:#b8bb26;">spec:
+</span><span style="color:#b8bb26;">  parentRefs:
+</span><span style="color:#b8bb26;">  - group: gateway.networking.k8s.io
+</span><span style="color:#b8bb26;">    kind: Gateway
+</span><span style="color:#b8bb26;">    name: kong
+</span><span style="color:#b8bb26;">  hostnames:
+</span><span style="color:#b8bb26;">  - kong.example
+</span><span style="color:#b8bb26;">  rules:
+</span><span style="color:#b8bb26;">  - backendRefs:
+</span><span style="color:#b8bb26;">    - group: &quot;&quot;
+</span><span style="color:#b8bb26;">      kind: Service
+</span><span style="color:#b8bb26;">      name: echo
+</span><span style="color:#b8bb26;">      port: 80
+</span><span style="color:#b8bb26;">      weight: 1
+</span><span style="color:#b8bb26;">    matches:
+</span><span style="color:#b8bb26;">    - path:
+</span><span style="color:#b8bb26;">        type: PathPrefix
+</span><span style="color:#b8bb26;">        value: /echo
+</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">kubectl apply -f -
+</span><span>
+</span></code></pre>
+<h2 id="cert-manager">cert-manager</h2>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    
+                        <a href="/tags/k8s/">#k8s</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                    
+                        <a class="next" href="&#x2F;awsome-apps&#x2F;">Awsome apps ›</a>
+                    
+                </div>
+            
+
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+                </div>
+            </main>
+
+            
+            
+        </div>
+
+      
+          <script type="text/javascript" src="/even.js" ></script>
+      
+    </body>
+
+</html>
